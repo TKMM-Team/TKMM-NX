@@ -3,7 +3,7 @@ Description=TKMM
 Requires=graphical.target
 
 [Service]
-ExecStart=/usr/bin/tkmm
+ExecStart=/storage/.local/share/tkmm/bin/tkmm
 # keep KillMode=process unless there is no good reason to switch to cgroup
 KillMode=process
 TimeoutStopSec=10
