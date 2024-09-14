@@ -1,13 +1,13 @@
 ### DISTRO INFORMATION ###
 
 # Name of the Distro to build (full name, without special characters)
-  DISTRONAME="Lakka"
+  DISTRONAME="TKMM"
 
 # short project description
-  DESCRIPTION="Lakka is a fast and user-friendly retroarch turnkey distribution"
+  DESCRIPTION="TKMM is a fast and user-friendly mod manager for Tears of the Kingdom"
 
 # Homepage
-  DISTRO_WEBSITE="https://www.lakka.tv/"
+  DISTRO_WEBSITE="https://tkmm.org/"
 
 # Do not add version to the build folder name
   BUILD_NO_VERSION="yes"
@@ -16,18 +16,18 @@
 ### USER INTERFACE SETTINGS ###
 
 # Welcome Message for e.g. SSH Server (up to 5 Lines)
-  GREETING0="###########################################"
-  GREETING1="# Lakka - The DIY retro emulation console #"
-  GREETING2="# ...... visit http://www.lakka.tv ...... #"
-  GREETING3="###########################################"
+  GREETING0="##############################################"
+  GREETING1="# TKMM - The easiest way to manage your mods #"
+  GREETING2="# ......... visit https://tkmm.org ......... #"
+  GREETING3="##############################################"
   GREETING4=""
 
 # Root password to integrate in the target system
-  ROOT_PASSWORD="root"
+  ROOT_PASSWORD="bubbleswashere"
 
 # Partition labels for USB/SD installation media
-  DISTRO_BOOTLABEL="LAKKA"
-  DISTRO_DISKLABEL="LAKKA_DISK"
+  DISTRO_BOOTLABEL="TKMM"
+  DISTRO_DISKLABEL="TKMM_DISK"
 
 
 ### BUILDSYSTEM SETTINGS ####
@@ -144,7 +144,7 @@
   INSTALLER_SUPPORT="yes"
 
 # Windowmanager to use (fluxbox / none)
-  WINDOWMANAGER="none"
+  WINDOWMANAGER="fluxbox"
 
 # build and install Joystick support (yes / no)
   JOYSTICK_SUPPORT="yes"

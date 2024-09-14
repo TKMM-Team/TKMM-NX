@@ -21,6 +21,12 @@ if [ "${DISTRO}" = "Lakka" ]; then
   ID="SWR-LAK"
   ADDITIONAL_PACKAGES+=" wii-u-gc-adapter"
 #  LAKKA_CANARY_PATH="http://nightly.builds.lakka.tv/members/gavin/lakka-v5.x-new"
+elif [ "${DISTRO}" = "TKMM" ]; then
+  DISTRO_PATH="tkmm"
+  DISTRO_ICON="icon_tkmm_hue.bmp"
+  HEKATE_SPLASH="splash_tkmm.bmp"
+  ID="SWR-TMM"
+  ADDITIONAL_PACKAGES+=" wii-u-gc-adapter dotnet-sdk fontconfig libICE libSM icu retroarch_assets"
 elif [ "${DISTRO}" = "LibreELEC" ]; then
   DISTRO_PATH="libreelec"
   DISTRO_ICON="icon_libreelec_hue.bmp"
@@ -31,6 +37,7 @@ else
 fi
 
 ADDITIONAL_PACKAGES+=" switch-bsp" 
+
 
 #Remove since we include driver in kernel now. Module Config/udev rules
 #Included in switch-bsp package, to match version in kernel(0.9.5).

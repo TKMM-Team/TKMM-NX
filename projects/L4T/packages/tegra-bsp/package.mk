@@ -447,6 +447,8 @@ makeinstall_init() {
   if [ -d ${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/initramfs/splash ]; then
     if [ "${DISTRO}" = "Lakka" ]; then
       cp ${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/initramfs/splash/splash-1280-lakka.png ${INSTALL}/splash/splash-1280.png
+    elif [ "${DISTRO}" = "TKMM" ]; then
+      cp ${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/initramfs/splash/splash-1280-tkmm.png ${INSTALL}/splash/splash-1280.png
     elif [ "${DISTRO}" = "LibreELEC" ]; then
       cp ${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/initramfs/splash/splash-1280-libreelec.png ${INSTALL}/splash/splash-1280.png
     fi
