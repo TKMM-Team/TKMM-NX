@@ -1,14 +1,13 @@
 PKG_NAME="retroarch_assets"
-PKG_VERSION="be29ffb3339e024810cebdafac14dd6dde1465e9"
+PKG_VERSION="771e60b1eacd4edc57c19b61ab2c713200af0a3f"
 PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/MasterBubbles/libretro-fonts"
+PKG_SITE="https://github.com/libretro/retroarch-assets"
 PKG_URL="${PKG_SITE}.git"
 PKG_LONGDESC="RetroArch assets. Background and icon themes for the menu drivers."
 PKG_TOOLCHAIN="manual"
 
 makeinstall_target() {
-  mkdir -p ${INSTALL}/usr/share/retroarch/assets
-  cp -r ${PKG_BUILD}/pkg ${INSTALL}/usr/share/retroarch/assets/pkg
+  make -C ${PKG_BUILD} install INSTALLDIR="${INSTALL}/usr/share/retroarch/assets"
 }
 
 post_makeinstall_target() {
