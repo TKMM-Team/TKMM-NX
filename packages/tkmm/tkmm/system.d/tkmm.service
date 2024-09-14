@@ -1,16 +1,24 @@
 [Unit]
 Description=TKMM
 Requires=graphical.target
+After=graphical.target
 
 [Service]
+Environment="DISPLAY=:0.0"
+Environment="DOTNET_ROOT=/usr/local/share/dotnet"
+Environment="PATH=/usr/local/share/dotnet:/storage/apps:/storage/apps/git/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+Environment="HOME=/storage"
+Environment="LD_LIBRARY_PATH=/usr/lib:/usr/lib/pulseaudio"
 ExecStart=/storage/.local/share/tkmm/bin/tkmm
-# keep KillMode=process unless there is no good reason to switch to cgroup
+WorkingDirectory=/storage
 KillMode=process
+TimeoutStartSec=60s
 TimeoutStopSec=10
 Restart=always
-RestartSec=2
+RestartSec=0
 StartLimitInterval=0
-Type=notify
+Type=simple
+User=root
 
 [Install]
 WantedBy=tkmm.target
