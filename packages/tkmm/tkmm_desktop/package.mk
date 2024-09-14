@@ -1,6 +1,6 @@
 PKG_NAME="tkmm_desktop"
 PKG_VERSION="v1.0.0-beta11"
-PKG_LICENSE="GPLv3"
+PKG_LICENSE="MIT"
 PKG_SITE="https://tkmm.org/"
 PKG_URL="https://github.com/TKMM-Team/Tkmm/releases/download/${PKG_VERSION}/TKMM-linux-arm64.zip"
 PKG_DEPENDS_TARGET="dotnet-sdk libICE libSM icu tkmm_assets fontconfig"
