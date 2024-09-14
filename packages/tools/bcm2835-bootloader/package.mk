@@ -41,7 +41,7 @@ makeinstall_target() {
       sed -i '/include distroconfig.txt/a #include distroconfig.gpi2w.txt' ${INSTALL}/usr/share/bootloader/config.txt
     fi
 
-    if [ "${DISTRO}" = "Lakka" ]; then
+    if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
       echo "disable_splash=1" >> ${INSTALL}/usr/share/bootloader/distroconfig.txt
       echo "dtparam=audio=on" >> ${INSTALL}/usr/share/bootloader/distroconfig.txt
       echo "hdmi_max_pixel_freq:0=200000000" >> ${INSTALL}/usr/share/bootloader/distroconfig.txt

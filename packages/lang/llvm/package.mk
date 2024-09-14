@@ -13,7 +13,7 @@ PKG_DEPENDS_TARGET="toolchain llvm:host zlib"
 PKG_LONGDESC="Low-Level Virtual Machine (LLVM) is a compiler infrastructure."
 PKG_TOOLCHAIN="cmake"
 
-[ "${DISTRO}" = "Lakka" ] && PKG_ARCH+=" i386" || true
+[ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM"  ] && PKG_ARCH+=" i386" || true
 
 PKG_CMAKE_OPTS_COMMON="-DLLVM_INCLUDE_TOOLS=ON \
                        -DLLVM_BUILD_TOOLS=OFF \

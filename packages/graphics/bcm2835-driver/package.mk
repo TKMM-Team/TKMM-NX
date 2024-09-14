@@ -37,7 +37,7 @@ makeinstall_target() {
       done
 
   # Instal GL headers/libs if used as OPENGLES
-  if [ "${DISTRO}" = "Lakka" ] && [ "${OPENGLES}" = "${PKG_NAME}" ]; then
+  if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM"  ] && [ "${OPENGLES}" = "${PKG_NAME}" ]; then
     for f in $(cd ${PKG_FLOAT}/opt/vc/include; ls | grep "GL"); do
       cp -PRv ${PKG_FLOAT}/opt/vc/include/${f} ${SYSROOT_PREFIX}/usr/include
     done
@@ -67,7 +67,7 @@ makeinstall_target() {
     done
 
   # Instal GL headers/libs if used as OPENGLES
-  if [ "${DISTRO}" = "Lakka" ] && [ "${OPENGLES}" = "${PKG_NAME}" ]; then
+  if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM"  ] && [ "${OPENGLES}" = "${PKG_NAME}" ]; then
     for f in $(cd ${PKG_FLOAT}/opt/vc/lib; ls *.so | grep -E "^lib(EGL|GL)"); do
       cp -PRv ${PKG_FLOAT}/opt/vc/lib/${f} ${INSTALL}/usr/lib
     done

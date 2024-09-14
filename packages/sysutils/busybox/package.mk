@@ -109,7 +109,7 @@ makeinstall_target() {
       cp ${PKG_DIR}/scripts/getedid-drm ${INSTALL}/usr/bin/getedid
     fi
     cp ${PKG_DIR}/scripts/createlog ${INSTALL}/usr/bin/
-    if [ "${DISTRO}" = "Lakka" ]; then
+    if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
       cp ${PKG_DIR}/scripts/createlog-lakka ${INSTALL}/usr/bin/createlog
     fi
     cp ${PKG_DIR}/scripts/dthelper ${INSTALL}/usr/bin
@@ -201,7 +201,7 @@ post_install() {
   fi
 
   # Lakka - make some folders world writable
-  if [ "${DISTRO}" = "Lakka" ]; then
+  if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
     sed -i ${INSTALL}/usr/lib/tmpfiles.d/z_01_busybox.conf \
         -e 's|0755|0777|g'
   fi

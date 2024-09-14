@@ -36,7 +36,7 @@ post_makeinstall_target() {
       -i ${SYSROOT_PREFIX}/usr/lib/pkgconfig/libpng*.pc
 
   # FIXME: when version changes, adjust below
-  if [ "${DISTRO}" = "Lakka" ]; then
+  if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM"  ]; then
     sed -e "s:\([\"'= ]\)/usr:\\1${SYSROOT_PREFIX}/usr:g" \
         -e "s:libs=\"-lpng17\":libs=\"-lpng17 -lz\":g" \
         -i ${SYSROOT_PREFIX}/usr/bin/libpng*-config

@@ -11,7 +11,7 @@ PKG_SITE="https://01.org/linuxmedia"
 PKG_URL="https://github.com/intel/libva/archive/${PKG_VERSION}.tar.gz"
 PKG_LONGDESC="Libva is an implementation for VA-API (VIdeo Acceleration API)."
 
-if [ "${DISTRO}" = "Lakka" ]; then
+if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
   PKG_ARCH+=" i386"
 fi
 

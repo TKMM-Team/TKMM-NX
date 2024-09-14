@@ -14,7 +14,7 @@ PKG_BUILD_FLAGS="-sysroot"
 PKG_CONFIGURE_OPTS_TARGET="--disable-shared \
                            --enable-static"
 
-if [ "${DISTRO}" = "Lakka" ]; then
+if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
   PKG_CONFIGURE_OPTS_TARGET="--enable-shared \
                              --with-pic \
                              --disable-static"

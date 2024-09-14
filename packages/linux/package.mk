@@ -177,7 +177,7 @@ pre_make_target() {
   fi
 
   # enable MIDI for Lakka on x86_64, i386 has options set in linux config file
-  if [ "${DISTRO}" = "Lakka" -a "${TARGET_ARCH}" = "x86_64" ]; then
+  if [[ ( "${DISTRO}" = "Lakka" || "${DISTRO}" = "TKMM" ) && "${TARGET_ARCH}" = "x86_64" ]]; then
     ${PKG_BUILD}/scripts/config \
                                 --module CONFIG_SND_SEQ_DEVICE \
                                 --module CONFIG_SND_SEQUENCER \
@@ -192,7 +192,7 @@ pre_make_target() {
   fi
 
   # enable Gamecon for Lakka on x86_64, i386 has options set in linux config file
-  if [ "${DISTRO}" = "Lakka" -a "${TARGET_ARCH}" = "x86_64" ]; then
+  if [[ ( "${DISTRO}" = "Lakka" || "${DISTRO}" = "TKMM" ) && "${TARGET_ARCH}" = "x86_64" ]]; then
     ${PKG_BUILD}/scripts/config \
                                 --module CONFIG_JOYSTICK_GAMECON \
                                 --module CONFIG_PARPORT \
@@ -206,13 +206,13 @@ pre_make_target() {
   fi
 
   # enable Ventoy support
-  if [ "${DISTRO}" = "Lakka" -a "${PROJECT}" = "Generic" ]; then
+  if [[ ( "${DISTRO}" = "Lakka" || "${DISTRO}" = "TKMM" ) && "${PROJECT}" = "Generic" ]]; then
     ${PKG_BUILD}/scripts/config \
                                 --enable CONFIG_BLK_DEV_DM
   fi
 
   # enable Dualsense on default and raspberrypi kernels for Lakka
-  if [ "${DISTRO}" = "Lakka" ] && [ "${LINUX}" = "default" -o "${LINUX}" = "raspberrypi" ]; then
+  if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ] && [ "${LINUX}" = "default" -o "${LINUX}" = "raspberrypi" ]; then
     ${PKG_BUILD}/scripts/config \
                                 --enable CONFIG_HID_PLAYSTATION \
                                 --enable CONFIG_PLAYSTATION_FF \
@@ -221,13 +221,13 @@ pre_make_target() {
   fi
 
   # enable additional USB / WIFI for CM4 / RetroDreamer / PiBoyDMG
-  if [ "${DISTRO}" = "Lakka" ] && [ "${DEVICE:0:4}" = "RPi4" ]; then
+  if [[ ( "${DISTRO}" = "Lakka" || "${DISTRO}" = "TKMM" ) &&  "${DEVICE:0:4}" = "RPi4" ]]; then
     ${PKG_BUILD}/scripts/config --module CONFIG_USB_DWC2
     ${PKG_BUILD}/scripts/config --module CONFIG_R8188EU
   fi
 
   # enable joystick and eMMC support for Exynos / OdroidXU4
-  if [ "${DISTRO}" = "Lakka" ] && [ "${DEVICE}" = "Exynos" ]; then
+  if [[ ( "${DISTRO}" = "Lakka" || "${DISTRO}" = "TKMM" ) && "${DEVICE}" = "Exynos" ]]; then
     ${PKG_BUILD}/scripts/config --enable CONFIG_INPUT_JOYSTICK \
                                 --module CONFIG_JOYSTICK_GF2K \
                                 --module CONFIG_JOYSTICK_IFORCE \
@@ -266,7 +266,7 @@ pre_make_target() {
   fi
 
   # install extra dts files for Lakka
-  if [ "${DISTRO}" = "Lakka" ]; then
+  if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
     for f in ${PROJECT_DIR}/${PROJECT}/config/*-overlay.dts ${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/config/*-overlay.dts ; do
       [ -f "${f}" ] && cp -v ${f} ${PKG_BUILD}/arch/${TARGET_KERNEL_ARCH}/boot/dts/overlays || true
     done
@@ -296,7 +296,7 @@ pre_make_target() {
   fi
 
   # enable rumble for PID-compliant game controllers
-  if [ "${DISTRO}" = "Lakka" ] && [ ! "${LINUX}" = "L4T" ]; then
+  if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ] && [ ! "${LINUX}" = "L4T" ]; then
     ${PKG_BUILD}/scripts/config --enable CONFIG_HID_PID
   fi
 
@@ -341,7 +341,7 @@ pre_make_target() {
     kernel_make olddefconfig
     kernel_make prepare
     kernel_make modules_prepare
-  elif [ "${DISTRO}" = "Lakka" ]; then
+  elif [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
   kernel_make listnewconfig
   yes "" | kernel_make oldconfig > /dev/null
   fi

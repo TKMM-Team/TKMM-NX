@@ -53,7 +53,7 @@ elif [ "${DISPLAYSERVER}" = "wl" ]; then
   PKG_MESON_OPTS_TARGET+=" -Dplatforms=wayland \
                            -Ddri3=disabled \
                            -Dglx=disabled"
-elif [ "${DISTRO}" = "Lakka" -o "${PROJECT}" = "L4T" ]; then
+elif [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" -o "${PROJECT}" = "L4T" ]; then
   PKG_DEPENDS_TARGET+=" libglvnd"
   PKG_MESON_OPTS_TARGET+=" -Dplatforms="" -Ddri3=enabled -Dglx=disabled -Dglvnd=true"
 else
@@ -66,7 +66,7 @@ if listcontains "${GRAPHIC_DRIVERS}" "(nvidia|nvidia-ng)"; then
   PKG_DEPENDS_TARGET+=" libglvnd"
   PKG_MESON_OPTS_TARGET+=" -Dglvnd=true"
 else
-  if [ ! "${DISTRO}" = "Lakka" -a ! "${PROJECT}" = "L4T" ]; then
+  if [ ! "${DISTRO}" = "Lakka" -o ! "${DISTRO}" = "TKMM" ] && [ ! "${PROJECT}" = "L4T" ]; then
     PKG_MESON_OPTS_TARGET+=" -Dglvnd=false"
   fi
 fi

@@ -9,7 +9,7 @@ PKG_LICENSE="GPL-3.0-only"
 PKG_SITE="https://ffmpeg.org"
 PKG_URL="http://ffmpeg.org/releases/ffmpeg-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_TARGET="toolchain zlib bzip2 openssl speex"
-if [ "${DISTRO}" = "Lakka" ]; then
+if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
   PKG_DEPENDS_TARGET+=" x264 lame rtmpdump"
 fi
 PKG_LONGDESC="FFmpeg is a complete, cross-platform solution to record, convert and stream audio and video."
@@ -242,7 +242,7 @@ configure_target() {
               ${PKG_FFMPEG_VULKAN} \
               ${PKG_FFMPEG_TESTING}"
 
-  if [  "${DISTRO}" = "Lakka" ]; then
+  if [  "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
     CONFIG_OPTIONS_STANDARD_FFMPEG=${CONFIG_OPTIONS_STANDARD_FFMPEG/"--disable-encoders "/"--enable-encoders "}
     CONFIG_OPTIONS_STANDARD_FFMPEG=${CONFIG_OPTIONS_STANDARD_FFMPEG/"--enable-encoder=ac3 "/""}
     CONFIG_OPTIONS_STANDARD_FFMPEG=${CONFIG_OPTIONS_STANDARD_FFMPEG/"--enable-encoder=aac "/""}

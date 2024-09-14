@@ -14,7 +14,7 @@ PKG_TOOLCHAIN="configure"
 
 PKG_BUILD_FLAGS="-sysroot"
 
-if [ "${DISTRO}" = "Lakka" ]; then
+if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
   PKG_BUILD_FLAGS=""
 fi
 

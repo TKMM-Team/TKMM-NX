@@ -30,6 +30,9 @@ post_install() {
   if [ "${DISTRO}" = "Lakka" ]; then
     sed -i ${INSTALL}/usr/lib/systemd/system/windowmanager.service \
         -e "s|kodi\.service|retroarch.service|g"
+  elif [ "${DISTRO}" = "TKMM" ]; then
+    sed -i ${INSTALL}/usr/lib/systemd/system/windowmanager.service \
+        -e "s|kodi\.service|tkmm.service|g"
   fi
   enable_service windowmanager.service
 }

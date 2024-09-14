@@ -23,7 +23,7 @@ PKG_CMAKE_OPTS_TARGET="-DENABLE_COMMONCRYPTO=OFF \
                        -DBUILD_DOC=OFF \
                        -DBUILD_SHARED_LIBS=OFF"
 
-if [ "${DISTRO}" = "Lakka" ]; then
+if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
   PKG_BUILD_FLAGS="+pic"
 fi
 

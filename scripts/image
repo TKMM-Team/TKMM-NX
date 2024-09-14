@@ -197,6 +197,10 @@ if [ -d "${PROJECT_DIR}/${PROJECT}/filesystem" ]; then
         sed -i ${INSTALL}/usr/lib/systemd/system/${service##*/} \
             -e "s|kodi\.service|retroarch.service|g" \
             -e "s|kodi\.target|retroarch.target|g"
+      elif [ "${DISTRO}" = "TKMM" ]; then
+        sed -i ${INSTALL}/usr/lib/systemd/system/${service##*/} \
+            -e "s|kodi\.service|tkmm.service|g" \
+            -e "s|kodi\.target|tkmm.target|g"
       fi
       enable_service ${service##*/}
     fi
@@ -214,6 +218,10 @@ if [ -n "${DEVICE}" -a -d "${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/filesyste
         sed -i ${INSTALL}/usr/lib/systemd/system/${service##*/} \
             -e "s|kodi\.service|retroarch.service|g" \
             -e "s|kodi\.target|retroarch.target|g"
+      elif [ "${DISTRO}" = "TKMM" ]; then
+        sed -i ${INSTALL}/usr/lib/systemd/system/${service##*/} \
+            -e "s|kodi\.service|tkmm.service|g" \
+            -e "s|kodi\.target|tkmm.target|g"
       fi
       enable_service ${service##*/}
     fi
@@ -365,6 +373,8 @@ if [ "${1}" = "release" -o "${1}" = "mkimage" -o "${1}" = "noobs" ]; then
       DISTRO_PATH="lakka"
     elif [ "${DISTRO}" = "LibreELEC" ]; then
       DISTRO_PATH="libreelec"
+    elif [ "${DISTRO}" = "TKMM" ]; then
+      DISTRO_PATH="tkmm"
     fi
 
     mkdir -p ${RELEASE_DIR}/${DISTRO_PATH}

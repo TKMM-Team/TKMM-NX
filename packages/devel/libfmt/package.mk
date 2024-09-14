@@ -17,6 +17,6 @@ PKG_CMAKE_OPTS_TARGET="-DCMAKE_CXX_STANDARD=14 \
                        -DFMT_TEST=OFF \
                        -DBUILD_SHARED_LIBS=ON"
 
-if [ "${DISTRO}" = "Lakka" ]; then
+if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
   PKG_CMAKE_OPTS_TARGET+=" -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE"
 fi

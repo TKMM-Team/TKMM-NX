@@ -12,7 +12,7 @@ PKG_DEPENDS_TARGET="toolchain Python3 distutilscross:host"
 PKG_LONGDESC="A module to control Raspberry Pi GPIO channels."
 PKG_TOOLCHAIN="manual"
 
-if [ "${DISTRO}" = "Lakka" ]; then
+if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
   PKG_ARCH+=" aarch64"
 fi
 
@@ -28,13 +28,13 @@ make_target() {
 }
 
 makeinstall_target() {
-  if [ "${DISTRO}" = "Lakka" ]; then
+  if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
     python setup.py install --root=${INSTALL} --prefix=/usr
   fi
 }
 
 post_makeinstall_target() {
-  if [ "${DISTRO}" = "Lakka" ]; then
+  if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
     find ${INSTALL}/usr/lib -name "*.py" -exec rm -rf "{}" ";"
   fi
 }

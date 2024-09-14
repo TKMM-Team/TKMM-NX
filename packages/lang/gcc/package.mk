@@ -27,7 +27,7 @@ case ${TARGET_ARCH} in
     ;;
 esac
 
-if [ "${DISTRO}" = "Lakka" ]; then
+if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM"  ]; then
   OPTS_LIBATOMIC="--enable-libatomic"
 fi
 
@@ -126,7 +126,7 @@ post_make_host() {
 post_makeinstall_host() {
   cp -PR ${TARGET_NAME}/libstdc++-v3/src/.libs/libstdc++.so* ${SYSROOT_PREFIX}/usr/lib
 
-  if [ "${DISTRO}" = "Lakka" ];then
+  if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM"  ];then
     cp -P ${TARGET_NAME}/libstdc++-v3/src/.libs/libstdc++.a ${SYSROOT_PREFIX}/usr/lib
   fi
 

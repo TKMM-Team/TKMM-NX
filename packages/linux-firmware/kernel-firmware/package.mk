@@ -87,7 +87,7 @@ makeinstall_target() {
   fi
 
   # On Lakka use iwlwifi firmware from this package instead of separate LibreELEC package
-  if [ "${DISTRO}" = "Lakka" -a "${PROJECT}" = "Generic" ]; then
+  if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ] && [ "${PROJECT}" = "Generic" ]; then
     cp -Lv ${PKG_FW_SOURCE}/iwlwifi-* ${FW_TARGET_DIR}/
   fi
 

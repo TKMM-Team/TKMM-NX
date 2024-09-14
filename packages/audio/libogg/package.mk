@@ -14,6 +14,6 @@ PKG_BUILD_FLAGS="+pic"
 
 PKG_CMAKE_OPTS_TARGET="-DINSTALL_DOCS=OFF"
 
-if [ "${DISTRO}" = "Lakka" ]; then
+if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
   PKG_CMAKE_OPTS_TARGET+=" -DBUILD_SHARED_LIBS=ON"
 fi

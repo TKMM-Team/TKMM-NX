@@ -19,7 +19,7 @@ makeinstall_target() {
   mkdir -p ${SYSROOT_PREFIX}/usr/lib
     cp -PR src/libaio.a ${SYSROOT_PREFIX}/usr/lib
 
-    if [ "${DISTRO}" = "Lakka" ]; then
+    if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
       cp -PR src/libaio.so* ${SYSROOT_PREFIX}/usr/lib
       ln -s libaio.so.1.0.2 ${SYSROOT_PREFIX}/usr/lib/libaio.so.1
       ln -s libaio.so.1.0.2 ${SYSROOT_PREFIX}/usr/lib/libaio.so

@@ -20,6 +20,6 @@ PKG_CONFIGURE_OPTS_TARGET="--enable-static \
                            --disable-examples \
                            --disable-oggtest"
 
-if [ "${DISTRO}" = "Lakka" ]; then
+if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
   PKG_CONFIGURE_OPTS_TARGET="${PKG_CONFIGURE_OPTS_TARGET//--disable-shared/--enable-shared}"
 fi

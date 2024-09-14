@@ -208,7 +208,7 @@ post_makeinstall_target() {
     sed -e "s,^.*HandlePowerKey=.*$,HandlePowerKey=ignore,g" -i ${INSTALL}/etc/systemd/logind.conf
   fi
 
-  if [ "${DISTRO}" = "Lakka" -a "${PROJECT}" = "RPi" ]; then
+  if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ] && [ "${PROJECT}" = "RPi" ]; then
     sed -e "s,^.*HandlePowerKey=.*$,HandlePowerKey=poweroff,g" -i $INSTALL/etc/systemd/logind.conf
   fi
 

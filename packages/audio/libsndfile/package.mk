@@ -26,6 +26,6 @@ PKG_CMAKE_OPTS_TARGET="-DBUILD_PROGRAMS=OFF \
                        -DINSTALL_MANPAGES=OFF \
                        -DINSTALL_PKGCONFIG_MODULE=ON"
 
-if [ "${DISTRO}" = "Lakka" ]; then
+if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
   PKG_CMAKE_OPTS_TARGET+=" -DBUILD_SHARED_LIBS=ON"
 fi

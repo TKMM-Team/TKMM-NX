@@ -4,6 +4,8 @@ if [ "${DISTRO}" = "Lakka" ]; then
   DISTRO_FOLDER_NAME="lakka"
 elif [ "${DISTRO}" = "LibreELEC" ]; then
   DISTRO_FOLDER_NAME="libreelec"
+elif [ "${DISTRO}" = "TKMM" ]; then
+  DISTRO_FOLDER_NAME="tkmm"
 fi
 
 mkdir -p ${RELEASE_DIR}/${DISTRO_FOLDER_NAME}/boot
@@ -16,7 +18,7 @@ cp -PR ${INSTALL}/usr/share/bootloader/boot/nx-plat.dtimg ${RELEASE_DIR}/${DISTR
 cp -PR ${INSTALL}/usr/share/bootloader/boot/boot.scr ${RELEASE_DIR}/${DISTRO_FOLDER_NAME}/boot
 
 #Hekate Icon for distro
-[ ${DISTRO} = "Lakka" -o ${DISTRO} = "LibreELEC" ] && cp -PR ${INSTALL}/usr/share/bootloader/boot/icon_${DISTRO_FOLDER_NAME}_hue.bmp ${RELEASE_DIR}/${DISTRO_FOLDER_NAME}/boot
+[ ${DISTRO} = "Lakka" -o ${DISTRO} = "LibreELEC" -o "${DISTRO}" = "TKMM" ] && cp -PR ${INSTALL}/usr/share/bootloader/boot/icon_${DISTRO_FOLDER_NAME}_hue.bmp ${RELEASE_DIR}/${DISTRO_FOLDER_NAME}/boot
 
 #Hekate ini
 mkdir -p ${RELEASE_DIR}/bootloader/ini

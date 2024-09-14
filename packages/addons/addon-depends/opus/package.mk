@@ -22,7 +22,7 @@ PKG_CONFIGURE_OPTS_TARGET="--enable-static \
                            --disable-shared \
                            ${PKG_FIXED_POINT}"
 
-if [ "${DISTRO}" = "Lakka" ]; then
+if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ]; then
   PKG_CONFIGURE_OPTS_TARGET="--disable-static \
                              --enable-shared \
                              ${PKG_FIXED_POINT}"

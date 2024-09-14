@@ -36,7 +36,7 @@ post_makeinstall_target() {
 }
 
 post_install() {
-  if [ "${DISTRO}" = "Lakka" ] && [ "${DEVICE}" = "RPi4-RetroDreamer" ]; then
+  if [ "${DISTRO}" = "Lakka" -o "${DISTRO}" = "TKMM" ] && [ "${DEVICE}" = "RPi4-RetroDreamer" ]; then
     sed -e "s|^options snd-usb-audio index=.*$|options snd-usb-audio index=0|g" \
         -i ${INSTALL}/usr/lib/modprobe.d/alsa-base.conf
   fi
