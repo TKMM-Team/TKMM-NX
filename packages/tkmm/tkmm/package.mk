@@ -1,7 +1,7 @@
 PKG_NAME="tkmm"
 PKG_LICENSE="MIT"
 PKG_SITE="https://tkmm.org/"
-PKG_DEPENDS_TARGET="dotnet-sdk libICE libSM icu tkmm_assets fontconfig xf86-input-joystick"
+PKG_DEPENDS_TARGET="dotnet-sdk libICE libSM icu tkmm_assets fontconfig xf86-input-joystick 7-zip"
 PKG_LONGDESC="TKMM is an easy to use mod manager and file merger for Tears of the Kingdom"
 PKG_TOOLCHAIN="manual"
 
