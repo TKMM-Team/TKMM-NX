@@ -29,6 +29,12 @@
   DISTRO_BOOTLABEL="TKMM"
   DISTRO_DISKLABEL="TKMM_DISK"
 
+# Define whether to install .NET SDK or Runtime
+if [ "${DEVMODE}" = "enabled" ]; then
+  ADDITIONAL_PACKAGES="dotnet-sdk"
+else
+  ADDITIONAL_PACKAGES="dotnet-runtime"
+fi
 
 ### BUILDSYSTEM SETTINGS ####
 
@@ -155,7 +161,7 @@
 # additional packages to install:
 # Space separated list is supported,
 # e.g. ADDITIONAL_PACKAGES="PACKAGE1 PACKAGE2"
-  ADDITIONAL_PACKAGES="rsync"
+  ADDITIONAL_PACKAGES+=" rsync"
 
 # Do not build the OVA image
   SKIP_VIRTUAL_APPLIANCE="yes"
