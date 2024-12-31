@@ -46,6 +46,8 @@ fi
 # If you want to put anything else to be executed on the first boot
 # (and only on the first boot), put it here.
 
+touch /storage/.cache/services/samba.disabled
+systemctl restart smbd
 
 
 # Do not put anything below here. But you can above here.
