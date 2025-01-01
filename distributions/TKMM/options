@@ -31,7 +31,7 @@
 
 # Define whether to install .NET SDK or Runtime
 if [ "${DEVMODE}" = "enabled" ]; then
-  ADDITIONAL_PACKAGES="dotnet-sdk"
+  ADDITIONAL_PACKAGES="dotnet-sdk git"
 else
   ADDITIONAL_PACKAGES="dotnet-runtime"
 fi
