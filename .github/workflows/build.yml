@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      regular_build: ${{ steps.regular_build.outputs.success }}
     
     steps:
       - name: Checkout code
@@ -17,39 +19,67 @@ jobs:
         run: |
           sudo apt update
           sudo apt upgrade -y
-          sudo apt install -y gcc make git unzip wget xz-utils bc gperf zip g++ xfonts-utils xsltproc lzop \
-                              openjdk-11-jre-headless libparse-yapp-perl libxml-parser-perl patchutils rdfind
+          sudo apt install -y gcc make git unzip wget xz-utils bc gperf zip g++ xfonts-utils xsltproc openjdk-11-jre-headless \
+            libparse-yapp-perl libxml-parser-perl patchutils lzop rdfind
           
-      - name: Build and upload regular image
+      - name: Build regular image
+        id: regular_build
         run: |
           THREADCOUNT=20 AUTOREMOVE=yes DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 make image
           mv target/TKMM-Switch.*.tar target/TKMM-NX-${{ github.ref_name }}.tar
-          
-      - name: Upload regular image
-        uses: softprops/action-gh-release@v1
+          echo "success=true" >> $GITHUB_OUTPUT
+
+  release:
+    needs: build
+    if: needs.build.outputs.regular_build == 'true'
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions: write-all
+    outputs:
+      release: ${{ steps.release.outputs.upload_url }}
+
+    steps:
+      - name: Create Release
+        uses: actions/create-release@v1
+        id: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
         with:
-          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          release_name: TKMM-NX - ${{ github.ref_name }}
           draft: false
           prerelease: false
-          files: target/TKMM-NX-${{ github.ref_name }}.tar
+
+  upload:
+    needs: [build, release]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Upload regular image
+        uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          upload_url: ${{ needs.release.outputs.release }}
+          asset_path: ./target/TKMM-NX-${{ github.ref_name }}.tar
+          asset_name: TKMM-NX-${{ github.ref_name }}.tar
+          asset_content_type: application/x-tar
           
-      - name: Clean last build
+      - name: Clean target folder
         run: |
           rm -rf target/*
           
-      - name: Build and upload debug image
+      - name: Build debug image
         run: |
           THREADCOUNT=20 AUTOREMOVE=yes DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 DEVMODE=enabled make image
           mv target/TKMM-Switch.*.tar target/TKMM-NX-${{ github.ref_name }}-debug.tar
           
       - name: Upload debug image
-        uses: softprops/action-gh-release@v1
-        with:
-          name: ${{ github.ref_name }}
-          draft: false
-          prerelease: false
-          files: target/TKMM-NX-${{ github.ref_name }}-debug.tar
+        uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          upload_url: ${{ needs.release.outputs.release }}
+          asset_path: ./target/TKMM-NX-${{ github.ref_name }}-debug.tar
+          asset_name: TKMM-NX-${{ github.ref_name }}-debug.tar
+          asset_content_type: application/x-tar
