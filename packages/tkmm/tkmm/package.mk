@@ -17,14 +17,18 @@ PKG_BUILD_FLAGS=" -c Release \
                   -p:IncludeNativeLibrariesForSelfExtract=true \
                   -p:PublishSingleFile=true \
                   -p:Version=${VERSION_NAME} \
-                  -p:FileName=tkmm \
                   -p:DefineConstants=SWITCH%3BTRACE%3BTARGET_NX%3BRELEASE"
 
-makeinstall_target() {
-  mkdir -p ${INSTALL}/usr/bin
-  dotnet publish src/Tkmm ${PKG_BUILD_FLAGS} -o ${INSTALL}/usr/bin
-  mv ${INSTALL}/usr/bin/Tkmm ${INSTALL}/usr/bin/tkmm
+pre_make_target() {
+  mkdir -p ${INSTALL}/usr/bin/tkmm
   cp -v ${PKG_DIR}/scripts/tkmm-*.sh ${INSTALL}/usr/bin
+}
+
+makeinstall_target() {
+  dotnet publish src/Tkmm ${PKG_BUILD_FLAGS} -o ${INSTALL}/usr/bin/tkmm
+  mv ${INSTALL}/usr/bin/tkmm/Tkmm ${INSTALL}/usr/bin/tkmm/tkmm
+  tar -cvf ${INSTALL}/usr/bin/tkmm.tar.gz -C ${INSTALL}/usr/bin/tkmm .
+  rm -rf ${INSTALL}/usr/bin/tkmm
 }
 
 post_install() {

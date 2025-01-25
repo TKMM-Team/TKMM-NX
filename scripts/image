@@ -299,6 +299,11 @@ if [ "${BOOTLOADER}" = "switch-bootloader" ]; then
 fi
 chmod 0644 ${TARGET_IMG}/${IMAGE_NAME}.kernel
 
+if [ "${DISTRO}" = "TKMM" ]; then
+  mkdir -p temp_tkmm
+  mv ${BUILD}/image/system/usr/bin/tkmm.tar.gz temp_tkmm/
+fi
+
 # Set mksquashfs options for each compression method
 if [ -z "${SQUASHFS_COMPRESSION_OPTION}" ]; then
   if [ "${SQUASHFS_COMPRESSION:-gzip}" = "gzip" ]; then
@@ -347,9 +352,11 @@ if [ "${1}" = "release" -o "${1}" = "mkimage" -o "${1}" = "noobs" ]; then
     fi
   fi
 
-  cp ${ROOT}/README* ${RELEASE_DIR}
-  cp ${ROOT}/CHANGELOG* ${RELEASE_DIR}
-  echo "${TARGET_VERSION}" > ${RELEASE_DIR}/RELEASE
+  if [ "${DISTRO}" != "TKMM" ]; then
+    cp ${ROOT}/README* ${RELEASE_DIR}
+    cp ${ROOT}/CHANGELOG* ${RELEASE_DIR}
+    echo "${TARGET_VERSION}" > ${RELEASE_DIR}/RELEASE
+  fi
 
   if [ ! "${MEDIACENTER}" = "no" ]; then
     echo "Kodi commit: $(get_pkg_version ${MEDIACENTER})" >> ${RELEASE_DIR}/RELEASE
@@ -378,9 +385,11 @@ if [ "${1}" = "release" -o "${1}" = "mkimage" -o "${1}" = "noobs" ]; then
     fi
 
     mkdir -p ${RELEASE_DIR}/${DISTRO_PATH}
-    cp ${ROOT}/README* ${RELEASE_DIR}/${DISTRO_PATH}
-    cp ${ROOT}/CHANGELOG* ${RELEASE_DIR}/${DISTRO_PATH}
-    echo "${TARGET_VERSION}" > ${RELEASE_DIR}/${DISTRO_PATH}/RELEASE
+    if [ "${DISTRO}" != "TKMM" ]; then
+      cp ${ROOT}/README* ${RELEASE_DIR}/${DISTRO_PATH}
+      cp ${ROOT}/CHANGELOG* ${RELEASE_DIR}/${DISTRO_PATH} 
+      echo "${TARGET_VERSION}" > ${RELEASE_DIR}/${DISTRO_PATH}/RELEASE
+    fi
     mkdir -p $RELEASE_DIR/${DISTRO_PATH}/licenses
     cp ${ROOT}/licenses/* ${RELEASE_DIR}/${DISTRO_PATH}/licenses
     if [ "${BOOTLOADER}" = "odin-bootloader" ]; then
@@ -391,8 +400,8 @@ if [ "${1}" = "release" -o "${1}" = "mkimage" -o "${1}" = "noobs" ]; then
     mkdir -p ${RELEASE_DIR}/${DISTRO_PATH}/storage
     if [ "${DISTRO}" = "TKMM" ]; then
       mkdir -p ${RELEASE_DIR}/${DISTRO_PATH}/storage/.local/share/tkmm/bin/
-      cp -r ${INSTALL}/usr/bin/tkmm ${RELEASE_DIR}/${DISTRO_PATH}/storage/.local/share/tkmm/bin/
-      rm -rf ${INSTALL}/usr/bin/tkmm
+      tar -xf temp_tkmm/tkmm.tar.gz -C ${RELEASE_DIR}/${DISTRO_PATH}/storage/.local/share/tkmm/bin/
+      rm -rf temp_tkmm/
     fi
     cp ${TARGET_IMG}/${IMAGE_NAME}.system ${RELEASE_DIR}/${DISTRO_PATH}/SYSTEM
     cp ${TARGET_IMG}/${IMAGE_NAME}.kernel ${RELEASE_DIR}/${DISTRO_PATH}/KERNEL
@@ -425,7 +434,7 @@ if [ "${1}" = "release" -o "${1}" = "mkimage" -o "${1}" = "noobs" ]; then
   rm -rf ${TARGET_IMG}/${IMAGE_NAME}.tar
 
   # Create release tarball
-  tar cf ${TARGET_IMG}/${IMAGE_NAME}.tar -C target ${IMAGE_NAME}
+  tar cf ${TARGET_IMG}/${IMAGE_NAME}.tar -C target/${IMAGE_NAME}/ .
 
   # Create sha256 checksum of tarball
   ( cd ${TARGET_IMG}
