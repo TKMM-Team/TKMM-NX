@@ -1,9 +1,7 @@
 name: Build and Release (Self-hosted)
 
 on:
-  push:
-    tags:
-      - '*'
+    workflow_dispatch:
 
 jobs:
   build:
@@ -24,8 +22,8 @@ jobs:
         working-directory: /home/bubbles/TKMM-NX
         run: |
           mkdir -p releases
-          DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 make image
-          mv target/TKMM-Switch.*.tar releases/TKMM-NX-${{ github.ref_name }}.tar
+          THREADCOUNT=20 DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 make image
+          find target -name "TKMM-Switch.*.tar" -exec mv {} releases/TKMM-NX-${{ github.ref_name }}.tar \;
           rm -rf target/*
           echo "success=true" >> $GITHUB_OUTPUT
 
@@ -59,8 +57,8 @@ jobs:
       - name: Build debug image
         working-directory: /home/bubbles/TKMM-NX
         run: |
-          DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 DEVMODE=enabled make image
-          mv target/TKMM-Switch.*.tar releases/TKMM-NX-${{ github.ref_name }}-debug.tar
+          THREADCOUNT=20 DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 DEVMODE=enabled make image
+          find target -name "TKMM-Switch.*.tar" -exec mv {} releases/TKMM-NX-${{ github.ref_name }}-debug.tar \;
           
       - name: Upload Release Assets
         uses: actions/upload-release-asset@v1
