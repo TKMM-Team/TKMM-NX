@@ -13,6 +13,13 @@ jobs:
       regular_build: ${{ steps.regular_build.outputs.success }}
     
     steps:
+      - name: Install and update dependencies
+        run: |
+          sudo apt update
+          sudo apt upgrade -y
+          sudo apt install -y gcc make git unzip wget xz-utils bc gperf zip g++ xfonts-utils xsltproc \
+            openjdk-11-jre-headless libparse-yapp-perl libxml-parser-perl patchutils lzop rdfind
+
       - name: Update repository
         working-directory: /home/bubbles/TKMM-NX
         run: |
@@ -28,6 +35,15 @@ jobs:
           find target -name "TKMM-Switch.*.tar" -exec mv {} releases/TKMM-NX-${{ github.ref_name }}.tar \;
           rm -rf target/*
           echo "success=true" >> $GITHUB_OUTPUT
+
+      - name: Build debug image
+        id: debug_build
+        working-directory: /home/bubbles/TKMM-NX
+        continue-on-error: true
+        run: |
+          THREADCOUNT=20 DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 DEVMODE=enabled make image
+          find target -name "TKMM-Switch.*.tar" -exec mv {} releases/TKMM-NX-${{ github.ref_name }}-debug.tar \;
+          rm -rf target/*
 
   release:
     needs: build
@@ -56,28 +72,12 @@ jobs:
     runs-on: self-hosted
     
     steps:
-      - name: Build debug image
-        working-directory: /home/bubbles/TKMM-NX
-        continue-on-error: true
-        run: |
-          THREADCOUNT=20 DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 DEVMODE=enabled make image
-          find target -name "TKMM-Switch.*.tar" -exec mv {} releases/TKMM-NX-${{ github.ref_name }}-debug.tar \;
-          
       - name: Upload Release Assets
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
         with:
-          upload_url: ${{ needs.release.outputs.release }}
-          asset_path: /home/bubbles/TKMM-NX/releases/TKMM-NX-${{ github.ref_name }}.tar
-          asset_name: TKMM-NX-${{ github.ref_name }}.tar
-          asset_content_type: application/x-tar
-        continue-on-error: true
-      - uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
-        with:
-          upload_url: ${{ needs.release.outputs.release }}
-          asset_path: /home/bubbles/TKMM-NX/releases/TKMM-NX-${{ github.ref_name }}-debug.tar
-          asset_name: TKMM-NX-${{ github.ref_name }}-debug.tar
-          asset_content_type: application/x-tar 
+          tag_name: ${{ github.ref_name }}
+          files: |
+            /home/bubbles/TKMM-NX/releases/TKMM-NX-${{ github.ref_name }}.tar
+            /home/bubbles/TKMM-NX/releases/TKMM-NX-${{ github.ref_name }}-debug.tar
