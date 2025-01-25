@@ -31,6 +31,7 @@ jobs:
         working-directory: /home/bubbles/TKMM-NX
         run: |
           mkdir -p releases
+          rm -rf target/*
           THREADCOUNT=20 DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 make image
           find target -name "TKMM-Switch.*.tar" -exec mv {} releases/TKMM-NX-${{ github.ref_name }}.tar \;
           rm -rf target/*
