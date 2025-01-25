@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, Bubbles]
+    runs-on: [self-hosted, Linux, X64, Bubbles]
     outputs:
       regular_build: ${{ steps.regular_build.outputs.success }}
     

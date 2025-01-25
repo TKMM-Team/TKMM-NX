@@ -1,0 +1,11 @@
+name: Test Runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: [self-hosted, Linux, X64, Bubbles]
+    steps:
+      - name: Test Connection
+        run: echo "Hello from runner" 
