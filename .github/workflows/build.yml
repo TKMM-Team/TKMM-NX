@@ -22,7 +22,7 @@ jobs:
           
       - name: Build image
         run: |
-          THREADCOUNT=10 DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 DEVMODE=enabled make image
+          THREADCOUNT=20 DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 make image
           
       - name: Create Release
         id: create_release
