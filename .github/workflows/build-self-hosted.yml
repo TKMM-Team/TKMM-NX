@@ -7,7 +7,8 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, Linux, X64, Bubbles]
+    permissions: write-all
+    runs-on: self-hosted
     outputs:
       regular_build: ${{ steps.regular_build.outputs.success }}
     
@@ -51,7 +52,8 @@ jobs:
 
   upload:
     needs: [build, release]
-    runs-on: [self-hosted, Bubbles]
+    permissions: write-all
+    runs-on: self-hosted
     
     steps:
       - name: Build debug image
