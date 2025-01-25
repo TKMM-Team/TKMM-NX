@@ -34,8 +34,17 @@ jobs:
           mkdir -p releases
           rm -rf target/*
           THREADCOUNT=20 DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 make image
-          find target -name "TKMM-Switch.*.tar" -exec mv {} releases/TKMM-NX-${{ github.ref_name }}.tar \;
-          rm -rf target/*
+          for file in target/TKMM-Switch.*; do
+            if [ -f "$file" ]; then
+              commit=$(echo "$file" | sed -E 's/.*-([a-f0-9]+)\.[^.]+(\.[^.]+)?$/\1/')
+              if [[ "$file" == *.tar.sha256 ]]; then
+                mv "$file" "releases/TKMM-NX-${{ github.ref_name }}-${commit}.tar.sha256"
+              else
+                ext="${file##*.}"
+                mv "$file" "releases/TKMM-NX-${{ github.ref_name }}-${commit}.${ext}"
+              fi
+            fi
+          done
           echo "success=true" >> $GITHUB_OUTPUT
 
       - name: Build debug image
@@ -43,9 +52,19 @@ jobs:
         working-directory: /home/bubbles/TKMM-NX
         continue-on-error: true
         run: |
+          mkdir -p debug
           THREADCOUNT=20 DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 DEVMODE=enabled make image
-          find target -name "TKMM-Switch.*.tar" -exec mv {} releases/TKMM-NX-${{ github.ref_name }}-debug.tar \;
-          rm -rf target/*
+          for file in target/TKMM-Switch.*; do
+            if [ -f "$file" ]; then
+              commit=$(echo "$file" | sed -E 's/.*-([a-f0-9]+)\.[^.]+(\.[^.]+)?$/\1/')
+              if [[ "$file" == *.tar.sha256 ]]; then
+                mv "$file" "debug/TKMM-NX-${{ github.ref_name }}-DEBUG-${commit}.tar.sha256"
+              else
+                ext="${file##*.}"
+                mv "$file" "debug/TKMM-NX-${{ github.ref_name }}-DEBUG-${commit}.${ext}"
+              fi
+            fi
+          done
 
   release:
     needs: build
@@ -69,7 +88,7 @@ jobs:
           prerelease: false
 
   upload:
-    name: Upload Releases
+    name: Upload Images
     needs: [build, release]
     permissions: write-all
     runs-on: self-hosted
@@ -82,5 +101,15 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           files: |
-            /home/bubbles/TKMM-NX/releases/TKMM-NX-${{ github.ref_name }}.tar
-            /home/bubbles/TKMM-NX/releases/TKMM-NX-${{ github.ref_name }}-debug.tar
+            /home/bubbles/TKMM-NX/releases/*
+            /home/bubbles/TKMM-NX/debug/*
+
+      - name: Upload to mirror
+        run: |
+          scp -i ~/.ssh/github_runner_sftp_key releases/* ubuntu@repo.tkmm.org:/var/www/html/repo/.tkmm-nx/Releases
+          scp -i ~/.ssh/github_runner_sftp_key debug/* ubuntu@repo.tkmm.org:/var/www/html/repo/.tkmm-nx/Debug
+
+      - name: Cleanup Folders
+        run: |
+          rm -rf /home/bubbles/TKMM-NX/releases
+          rm -rf /home/bubbles/TKMM-NX/debug
