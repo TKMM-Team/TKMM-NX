@@ -23,7 +23,7 @@ jobs:
       - name: Update repository
         working-directory: /home/bubbles/TKMM-NX
         run: |
-          git fetch --all --tags
+          git fetch --all --tags -f
           git checkout ${{ github.ref_name }} -f
           
       - name: Build regular image
