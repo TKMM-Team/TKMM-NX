@@ -17,20 +17,39 @@ jobs:
         run: |
           sudo apt update
           sudo apt upgrade -y
-          sudo apt install -y gcc make git unzip wget xz-utils bc gperf zip g++ xfonts-utils xsltproc openjdk-11-jre-headless \
-            libparse-yapp-perl libxml-parser-perl patchutils lzop rdfind
+          sudo apt install -y gcc make git unzip wget xz-utils bc gperf zip g++ xfonts-utils xsltproc lzop \
+                              openjdk-11-jre-headless libparse-yapp-perl libxml-parser-perl patchutils rdfind
           
-      - name: Build image
+      - name: Build and upload regular image
         run: |
-          THREADCOUNT=20 DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 make image
+          THREADCOUNT=20 AUTOREMOVE=yes DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 make image
+          mv target/TKMM-Switch.*.tar target/TKMM-NX-${{ github.ref_name }}.tar
           
-      - name: Create Release
-        id: create_release
+      - name: Upload regular image
         uses: softprops/action-gh-release@v1
         with:
           name: ${{ github.ref_name }}
           draft: false
           prerelease: false
-          files: target/*
+          files: target/TKMM-NX-${{ github.ref_name }}.tar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Clean last build
+        run: |
+          rm -rf target/*
+          
+      - name: Build and upload debug image
+        run: |
+          THREADCOUNT=20 AUTOREMOVE=yes DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 DEVMODE=enabled make image
+          mv target/TKMM-Switch.*.tar target/TKMM-NX-${{ github.ref_name }}-debug.tar
+          
+      - name: Upload debug image
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          files: target/TKMM-NX-${{ github.ref_name }}-debug.tar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
