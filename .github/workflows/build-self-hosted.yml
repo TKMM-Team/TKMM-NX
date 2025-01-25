@@ -105,6 +105,7 @@ jobs:
             /home/bubbles/TKMM-NX/debug/*
 
       - name: Upload to mirror
+        working-directory: /home/bubbles/TKMM-NX
         run: |
           scp -i ~/.ssh/github_runner_sftp_key releases/* ubuntu@repo.tkmm.org:/var/www/html/repo/.tkmm-nx/Releases
           scp -i ~/.ssh/github_runner_sftp_key debug/* ubuntu@repo.tkmm.org:/var/www/html/repo/.tkmm-nx/Debug
