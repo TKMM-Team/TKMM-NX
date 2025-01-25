@@ -5,7 +5,8 @@ on:
 
 jobs:
   test:
-    runs-on: [self-hosted, Linux, X64, Bubbles]
+    permissions: write-all
+    runs-on: self-hosted
     steps:
       - name: Test Connection
         run: echo "Hello from runner" 
