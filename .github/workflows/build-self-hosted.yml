@@ -18,7 +18,7 @@ jobs:
           sudo apt update
           sudo apt upgrade -y
           sudo apt install -y gcc make git unzip wget xz-utils bc gperf zip g++ xfonts-utils xsltproc \
-            openjdk-11-jre-headless libparse-yapp-perl libxml-parser-perl patchutils lzop rdfind
+            openjdk-11-jre-headless libparse-yapp-perl libxml-parser-perl patchutils lzop rdfind dotnet-sdk-9.0
 
       - name: Update repository
         working-directory: /home/bubbles/TKMM-NX
