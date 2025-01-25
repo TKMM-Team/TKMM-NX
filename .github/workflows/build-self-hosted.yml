@@ -1,7 +1,9 @@
 name: Build and Release (Self-hosted)
 
 on:
-    workflow_dispatch:
+    push:
+      tags:
+        - '*'
 
 jobs:
   build:
@@ -31,7 +33,7 @@ jobs:
     needs: build
     if: needs.build.outputs.regular_build == 'true'
     name: Create Release
-    runs-on: [self-hosted, Bubbles]
+    runs-on: ubuntu-latest
     permissions: write-all
     outputs:
       release: ${{ steps.release.outputs.upload_url }}
@@ -56,6 +58,7 @@ jobs:
     steps:
       - name: Build debug image
         working-directory: /home/bubbles/TKMM-NX
+        continue-on-error: true
         run: |
           THREADCOUNT=20 DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 DEVMODE=enabled make image
           find target -name "TKMM-Switch.*.tar" -exec mv {} releases/TKMM-NX-${{ github.ref_name }}-debug.tar \;
