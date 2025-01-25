@@ -3,8 +3,8 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="nss"
-PKG_VERSION="3.89"
-PKG_SHA256="e40012df101331eadb87cfdb204969ab2a4b9a81735deba94fe5501aff12fd65"
+PKG_VERSION="3.98"
+PKG_SHA256="59bb55a59b02e4004fc26ad0aa1a13fe8d73c6c90c447dd2f2efb73fb81083ed"
 PKG_LICENSE="Mozilla Public License"
 PKG_SITE="http://ftp.mozilla.org/"
 PKG_URL="https://ftp.mozilla.org/pub/security/nss/releases/NSS_${PKG_VERSION//./_}_RTM/src/nss-${PKG_VERSION}-with-nspr-$(get_pkg_version nspr).tar.gz"
@@ -21,14 +21,14 @@ make_host() {
   rm -rf ${PKG_BUILD}/dist
 
   INCLUDES="-I${TOOLCHAIN}/include" \
-  make BUILD_OPT=1 USE_64=1 \
-     PREFIX=${TOOLCHAIN} \
-     NSPR_INCLUDE_DIR=${TOOLCHAIN}/include/nspr \
-     USE_SYSTEM_ZLIB=1 ZLIB_LIBS="-lz -L${TOOLCHAIN}/lib" \
-     SKIP_SHLIBSIGN=1 \
-     NSS_TESTS="dummy" \
-     CC=${CC} LDFLAGS="${LDFLAGS} -L${TOOLCHAIN}/lib" \
-     V=1
+    make BUILD_OPT=1 USE_64=1 \
+    PREFIX=${TOOLCHAIN} \
+    NSPR_INCLUDE_DIR=${TOOLCHAIN}/include/nspr \
+    USE_SYSTEM_ZLIB=1 ZLIB_LIBS="-lz -L${TOOLCHAIN}/lib" \
+    SKIP_SHLIBSIGN=1 \
+    NSS_TESTS="dummy" \
+    CC=${CC} LDFLAGS="${LDFLAGS} -L${TOOLCHAIN}/lib" \
+    V=1
 }
 
 makeinstall_host() {
@@ -54,18 +54,18 @@ make_target() {
   rm -rf ${PKG_BUILD}/dist
 
   make BUILD_OPT=1 ${TARGET_USE_64} ${TARGET_x86_64} \
-     NSS_USE_SYSTEM_SQLITE=1 \
-     NSPR_INCLUDE_DIR=${SYSROOT_PREFIX}/usr/include/nspr \
-     NSS_USE_SYSTEM_SQLITE=1 \
-     USE_SYSTEM_ZLIB=1 ZLIB_LIBS=-lz \
-     SKIP_SHLIBSIGN=1 \
-     OS_TEST=${TARGET_ARCH} \
-     NSS_TESTS="dummy" \
-     NSINSTALL=${TOOLCHAIN}/bin/nsinstall \
-     CPU_ARCH_TAG=${TARGET_ARCH} \
-     CC=${CC} \
-     LDFLAGS="${LDFLAGS} -L${SYSROOT_PREFIX}/usr/lib" \
-     V=1
+    NSS_USE_SYSTEM_SQLITE=1 \
+    NSPR_INCLUDE_DIR=${SYSROOT_PREFIX}/usr/include/nspr \
+    NSS_USE_SYSTEM_SQLITE=1 \
+    USE_SYSTEM_ZLIB=1 ZLIB_LIBS=-lz \
+    SKIP_SHLIBSIGN=1 \
+    OS_TEST=${TARGET_ARCH} \
+    NSS_TESTS="dummy" \
+    NSINSTALL=${TOOLCHAIN}/bin/nsinstall \
+    CPU_ARCH_TAG=${TARGET_ARCH} \
+    CC=${CC} \
+    LDFLAGS="${LDFLAGS} -L${SYSROOT_PREFIX}/usr/lib" \
+    V=1
 }
 
 makeinstall_target() {
