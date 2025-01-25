@@ -1,0 +1,35 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt upgrade -y
+          sudo apt install -y gcc make git unzip wget xz-utils bc gperf zip g++ xfonts-utils xsltproc openjdk-11-jre-headless
+          
+      - name: Build image
+        run: |
+          DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 DEVMODE=enabled make image
+          
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          files: target/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
