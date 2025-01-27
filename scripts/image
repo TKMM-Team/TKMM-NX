@@ -58,6 +58,7 @@ function do_mkimage() {
     OVA_SIZE="${OVA_SIZE}" \
     SKIP_VIRTUAL_APPLIANCE="${SKIP_VIRTUAL_APPLIANCE}" \
     LAKKA_BUILD_TYPE="${LAKKA_BUILD_TYPE:-release}" \
+    TKMM_VERSION="${TKMM_VERSION:-0.0.0}" \
     ${SCRIPTS}/mkimage
 }
 
@@ -103,7 +104,10 @@ TARGET_VERSION="${LIBREELEC_ARCH}-${LIBREELEC_VERSION}"
 if [ -n "${CUSTOM_IMAGE_NAME}" ]; then
   IMAGE_NAME="${CUSTOM_IMAGE_NAME}"
 else
-  if [ "${DEVEL_VERSION}" = "devel" ]; then
+  if [ "${DISTRO}" = "TKMM" ]; then
+    GIT_ABBREV=${GIT_HASH:0:7}
+    IMAGE_NAME="${DISTRONAME}-NX-${TKMM_VERSION:-0.0.0}-${GIT_ABBREV}"
+  elif [ "${DEVEL_VERSION}" = "devel" ]; then
     IMAGE_NAME="${DISTRONAME}-${LIBREELEC_ARCH}-${OS_VERSION}-${LIBREELEC_VERSION}"
   else
     IMAGE_NAME="${DISTRONAME}-${TARGET_VERSION}"
