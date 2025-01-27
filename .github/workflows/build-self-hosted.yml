@@ -9,7 +9,7 @@ jobs:
   build:
     name: Build Images
     permissions: write-all
-    runs-on: self-hosted
+    runs-on: bubbles
     outputs:
       regular_build: ${{ steps.regular_build.outputs.success }}
     
@@ -71,7 +71,7 @@ jobs:
     name: Upload Images
     needs: [build, release]
     permissions: write-all
-    runs-on: self-hosted
+    runs-on: bubbles
     
     steps:
       - name: Upload Release Assets
