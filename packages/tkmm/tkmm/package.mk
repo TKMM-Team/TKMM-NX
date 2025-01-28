@@ -21,7 +21,7 @@ PKG_BUILD_FLAGS=" -c Release \
 
 pre_make_target() {
   mkdir -p ${INSTALL}/usr/bin/tkmm
-  cp -v ${PKG_DIR}/scripts/tkmm-*.sh ${INSTALL}/usr/bin
+  cp -v ${PKG_DIR}/scripts/tkmm* ${INSTALL}/usr/bin
 }
 
 makeinstall_target() {
