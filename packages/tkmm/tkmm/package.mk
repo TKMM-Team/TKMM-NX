@@ -6,8 +6,10 @@ PKG_LONGDESC="TKMM is an easy to use mod manager and file merger for Tears of th
 PKG_URL="${PKG_SITE}.git"
 PKG_TOOLCHAIN="manual"
 
+: ${TKMM_VERSION:=0.0.0}
+
 case "${TKMM_VERSION}" in
-  "" | "0.0.0")
+  "0.0.0")
     PKG_VERSION="f2ea709948e392a72e6ff4bb016030cc83f24c4b"
     ;;
   *)
