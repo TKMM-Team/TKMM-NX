@@ -75,6 +75,18 @@ jobs:
     runs-on: bubbles
     
     steps:
+      - name: Upload to mirror
+        working-directory: /home/bubbles/TKMM-NX
+        run: |
+          scp -i ~/.ssh/github_runner_sftp_key releases/* ubuntu@repo.tkmm.org:/var/www/html/repo/.tkmm-nx/Releases
+          scp -i ~/.ssh/github_runner_sftp_key debug/* ubuntu@repo.tkmm.org:/var/www/html/repo/.tkmm-nx/Debug
+
+      - name: Normalize zip file name for GitHub release
+        working-directory: /home/bubbles/TKMM-NX
+        run: |
+          mv releases/*.zip releases/tkmm-nx.zip
+          mv debug/-*.zip debug/tkmm-nx-debug.zip
+
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
         env:
@@ -82,14 +94,8 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           files: |
-            /home/bubbles/TKMM-NX/releases/*
-            /home/bubbles/TKMM-NX/debug/*
-
-      - name: Upload to mirror
-        working-directory: /home/bubbles/TKMM-NX
-        run: |
-          scp -i ~/.ssh/github_runner_sftp_key releases/* ubuntu@repo.tkmm.org:/var/www/html/repo/.tkmm-nx/Releases
-          scp -i ~/.ssh/github_runner_sftp_key debug/* ubuntu@repo.tkmm.org:/var/www/html/repo/.tkmm-nx/Debug
+            /home/bubbles/TKMM-NX/releases/tkmm-nx.zip
+            /home/bubbles/TKMM-NX/debug/tkmm-nx-debug.zip
 
       - name: Cleanup Folders
         run: |
