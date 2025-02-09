@@ -1,2 +1,2 @@
 #!/bin/sh
-LAKKA_BUILD_TYPE=release DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 DEVMODE=enabled make image
+DISTRO=TKMM TKMM_VERSION=0.0.1-debug PROJECT=L4T DEVICE=Switch ARCH=aarch64 DEVMODE=enabled make image
