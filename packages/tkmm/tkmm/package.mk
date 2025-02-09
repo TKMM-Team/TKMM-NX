@@ -1,11 +1,19 @@
 PKG_NAME="tkmm"
 PKG_LICENSE="MIT"
 PKG_SITE="https://github.com/TKMM-Team/Tkmm"
-PKG_VERSION="${TKMM_VERSION}"
 PKG_DEPENDS_TARGET="libICE libSM icu tkmm_assets fontconfig xf86-input-joystick 7-zip"
 PKG_LONGDESC="TKMM is an easy to use mod manager and file merger for Tears of the Kingdom"
 PKG_URL="${PKG_SITE}.git"
 PKG_TOOLCHAIN="manual"
+
+case "${TKMM_VERSION}" in
+  "" | "0.0.0")
+    PKG_VERSION="f2ea709948e392a72e6ff4bb016030cc83f24c4b"
+    ;;
+  *)
+    PKG_VERSION="${TKMM_VERSION}"
+    ;;
+esac
 
 PKG_BUILD_FLAGS=" -c Release \
                   -r linux-arm64 \
