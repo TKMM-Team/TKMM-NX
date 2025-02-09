@@ -310,6 +310,7 @@ chmod 0644 ${TARGET_IMG}/${IMAGE_NAME}.kernel
 if [ "${DISTRO}" = "TKMM" ]; then
   mkdir -p temp_tkmm
   mv ${BUILD}/image/system/tkmm/tkmm.tar.gz temp_tkmm/
+  rm -rf ${BUILD}/image/system/tkmm
 fi
 
 # Set mksquashfs options for each compression method

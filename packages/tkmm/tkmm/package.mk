@@ -21,7 +21,6 @@ PKG_BUILD_FLAGS=" -c Release \
                   -r linux-arm64 \
                   --sc false \
                   --version-suffix ${TKMM_VERSION} \
-                  -o ${INSTALL}/tkmm/tmp \
                   -p:DebugType=embedded \
                   -p:IncludeNativeLibrariesForSelfExtract=true \
                   -p:PublishSingleFile=true \
@@ -35,7 +34,7 @@ pre_make_target() {
 }
 
 makeinstall_target() {
-  dotnet publish src/Tkmm ${PKG_BUILD_FLAGS}
+  dotnet publish src/Tkmm ${PKG_BUILD_FLAGS} -o ${INSTALL}/tkmm/tmp
   tar -cvf ${INSTALL}/tkmm/tkmm.tar.gz -C ${INSTALL}/tkmm/tmp .
   rm -rf ${INSTALL}/tkmm/tmp
 }
