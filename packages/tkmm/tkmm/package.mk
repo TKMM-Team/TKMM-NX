@@ -25,7 +25,7 @@ PKG_BUILD_FLAGS=" -c Release \
                   -p:IncludeNativeLibrariesForSelfExtract=true \
                   -p:PublishSingleFile=true \
                   -p:Version=${TKMM_VERSION#v} \
-                  -p:DefineConstants=SWITCH%3BTRACE%3BTARGET_NX%3BRELEASE"
+                  -p:IsSwitch=true"
 
 pre_make_target() {
   mkdir -p ${INSTALL}/tkmm/tmp
