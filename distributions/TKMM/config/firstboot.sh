@@ -48,6 +48,7 @@ fi
 
 touch /storage/.cache/services/samba.disabled
 touch /storage/.cache/services/bluez.disabled
+rm -rf /storage/.cache/services/bluez.conf
 systemctl restart smbd
 
 # Do not put anything below here. But you can above here.
