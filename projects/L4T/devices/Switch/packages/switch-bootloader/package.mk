@@ -12,6 +12,7 @@ boot_prefixes=${DISTRO_PATH}/boot/
 logopath=${DISTRO_PATH}/boot/splash.bmp
 id=${ID}
 icon=${DISTRO_PATH}/boot/${DISTRO_ICON}
+r2p_action=bootloader
 EOF
 
   cp ${PKG_DIR}/assets/README_CONFIG.txt ${PKG_BUILD}/
