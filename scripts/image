@@ -438,15 +438,15 @@ if [ "${1}" = "release" -o "${1}" = "mkimage" -o "${1}" = "noobs" ]; then
   # Create target directory
   mkdir -p ${TARGET_IMG}
 
-  # Remove any previously created release tarballs
-  rm -rf ${TARGET_IMG}/${IMAGE_NAME}.tar
+  # Remove any previously created release zip files
+  rm -rf ${TARGET_IMG}/${IMAGE_NAME}.zip
 
-  # Create release tarball
-  tar cf ${TARGET_IMG}/${IMAGE_NAME}.tar -C target/${IMAGE_NAME}/ .
+  # Create release zip file
+  ( cd target/${IMAGE_NAME} && zip -r ${TARGET_IMG}/${IMAGE_NAME}.zip . )
 
-  # Create sha256 checksum of tarball
+  # Create sha256 checksum of the zip file
   ( cd ${TARGET_IMG}
-    sha256sum ${IMAGE_NAME}.tar > ${IMAGE_NAME}.tar.sha256
+    sha256sum ${IMAGE_NAME}.zip > ${IMAGE_NAME}.zip.sha256
   )
 
   if  [ "${BOOTLOADER}" = "switch-bootloader" -o "${BOOTLOADER}" = "odin-bootloader" ]; then
