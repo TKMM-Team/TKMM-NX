@@ -47,8 +47,8 @@ fi
 # (and only on the first boot), put it here.
 
 touch /storage/.cache/services/samba.disabled
+touch /storage/.cache/services/bluez.disabled
 systemctl restart smbd
-
 
 # Do not put anything below here. But you can above here.
 
