@@ -23,7 +23,7 @@
   GREETING4=""
 
 # Root password to integrate in the target system
-  ROOT_PASSWORD="bubbleswashere"
+  ROOT_PASSWORD="tkmm"
 
 # Partition labels for USB/SD installation media
   DISTRO_BOOTLABEL="TKMM"
