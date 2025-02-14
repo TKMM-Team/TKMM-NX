@@ -1,0 +1,26 @@
+#!/bin/bash
+
+amixer -c $SOUND_CARD set 'x Speaker' 60%
+date=$(date '+%Y-%m-%d_%H-%M-%S')
+
+if [ -f "$SNAPSHOT_SOUND" ]; then
+    sound=$(sed 's/\r//; /^[[:space:]]*$/d' "$SNAPSHOT_SOUND" | tail -n 1)
+    echo "Debug: Read sound value from config: '$sound'"
+fi
+
+if ! [ "$sound" -ge 0 ] || ! [ "$sound" -le 4 ] || ! [ "$sound" -eq "$sound" ] 2>/dev/null; then
+    sound=0
+    echo "Debug: Sound value is invalid or empty, defaulting to: '$sound'"
+fi
+
+case $sound in
+    0) sound_file="shutter0.wav" ;;
+    1) sound_file="shutter1.wav" ;;
+    2) sound_file="click.wav" ;;
+    3) sound_file="fire.wav" ;;
+esac
+
+mkdir -p $SCREENSHOT_FOLDER
+
+aplay -D sysdefault:CARD=$SOUND_CARD "$SOUND_FOLDER/$sound_file" && \
+/usr/local/bin/ffmpeg -f x11grab -i :0.0 -vframes 1 "$SCREENSHOT_FOLDER/screenshot_${date}.png"
