@@ -1,6 +1,10 @@
 #!/bin/bash
 
-amixer -c $SOUND_CARD set 'x Speaker' 60%
+export SNAPSHOT_SOUND="/storage/.cache/snapshot_sound"
+export SOUND_FOLDER="/usr/share/tkmm/audio"
+export SCREENSHOT_FOLDER="/flash/tkmm/screenshots"
+export SOUND_CARD_NAME=$(cat /storage/.cache/sound_card)
+
 date=$(date '+%Y-%m-%d_%H-%M-%S')
 
 if [ -f "$SNAPSHOT_SOUND" ]; then
@@ -22,5 +26,5 @@ esac
 
 mkdir -p $SCREENSHOT_FOLDER
 
-aplay -D sysdefault:CARD=$SOUND_CARD "$SOUND_FOLDER/$sound_file" && \
+aplay -D sysdefault:CARD=$SOUND_CARD_NAME "$SOUND_FOLDER/$sound_file" && \
 /usr/local/bin/ffmpeg -f x11grab -i :0.0 -vframes 1 "$SCREENSHOT_FOLDER/screenshot_${date}.png"
