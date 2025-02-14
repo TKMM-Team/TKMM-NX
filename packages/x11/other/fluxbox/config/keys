@@ -19,4 +19,4 @@ OnWindow Mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
 OnWindow Mod1 Mouse3 :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
 
 # Take screenshot
-XF86Launch1 :ExecCommand /usr/bin/tkmm-snapshot
+XF86Launch1 :ExecCommand sh /usr/bin/tkmm-snapshot
