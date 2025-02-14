@@ -19,4 +19,4 @@ OnWindow Mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
 OnWindow Mod1 Mouse3 :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
 
 # Take screenshot
-XF86Launch1 :ExecCommand mkdir -p /flash/tkmm/screenshots && /usr/local/bin/ffmpeg -f x11grab -i :0.0 -vframes 1 "/flash/tkmm/screenshots/screenshot_$(date '+%Y-%m-%d_%H-%M-%S').png"
+XF86Launch1 :ExecCommand /usr/bin/tkmm-snapshot
