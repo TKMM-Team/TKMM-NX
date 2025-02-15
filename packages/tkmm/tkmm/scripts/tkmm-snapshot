@@ -12,7 +12,7 @@ if [ -f "$SNAPSHOT_SOUND" ]; then
     echo "Debug: Read sound value from config: '$sound'"
 fi
 
-if ! [ "$sound" -ge 0 ] || ! [ "$sound" -le 4 ] || ! [ "$sound" -eq "$sound" ] 2>/dev/null; then
+if ! [ "$sound" -ge 0 ] || ! [ "$sound" -le 3 ] || ! [ "$sound" -eq "$sound" ] 2>/dev/null; then
     sound=0
     echo "Debug: Sound value is invalid or empty, defaulting to: '$sound'"
 fi
