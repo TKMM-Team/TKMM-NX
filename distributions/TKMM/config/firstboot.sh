@@ -46,8 +46,8 @@ fi
 # If you want to put anything else to be executed on the first boot
 # (and only on the first boot), put it here.
 
-touch /storage/.cache/capture_sound
-echo "0" > /storage/.cache/capture_sound
+touch /storage/.cache/snapshot_sound
+echo "0" > /storage/.cache/snapshot_sound
 touch /storage/.cache/services/samba.disabled
 touch /storage/.cache/services/bluez.disabled
 rm -rf /storage/.cache/services/bluez.conf
