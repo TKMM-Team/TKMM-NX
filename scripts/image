@@ -107,9 +107,9 @@ else
   if [ "${DISTRO}" = "TKMM" ]; then
     GIT_ABBREV=${GIT_HASH:0:7}
     if [ "${DEVMODE}" = "enabled" ]; then
-      IMAGE_NAME="${DISTRONAME}-NX-v${TKMM_VERSION:-0.0.0}-debug-${GIT_ABBREV}"
+      IMAGE_NAME="${DISTRONAME}-NX-${TKMM_VERSION:-0.0.0}-debug-${GIT_ABBREV}"
     else
-      IMAGE_NAME="${DISTRONAME}-NX-v${TKMM_VERSION:-0.0.0}-${GIT_ABBREV}"
+      IMAGE_NAME="${DISTRONAME}-NX-${TKMM_VERSION:-0.0.0}-${GIT_ABBREV}"
     fi
   elif [ "${DEVEL_VERSION}" = "devel" ]; then
     IMAGE_NAME="${DISTRONAME}-${LIBREELEC_ARCH}-${OS_VERSION}-${LIBREELEC_VERSION}"
