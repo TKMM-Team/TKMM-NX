@@ -1,6 +1,6 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/TKMM-Team/.github/refs/heads/main/resources/Icon-Transparent-1024.png" width="300vh">
-  <h1>TKMM OS for Switch</h1>
+  <h1>TKMM-NX - Lightweight OS for the Nintendo Switch</h1>
   
   <a href="https://discord.gg/BbVXenRFVc">
     <img src="https://img.shields.io/discord/1179611100183011429?style=for-the-badge&logoColor=5865F2&color=5865F2&labelColor=2A2C33&logo=discord&label=discord" alt="Discord"/>
@@ -15,11 +15,7 @@
 
 <br />
 
-**TKMM-NX** is a custom operating system that combines the power of the Tears of the Kingdom Mod Manager (TKMM) with a lightweight, performance-optimized Linux environment—specifically tailored for the Nintendo Switch, based on Lakka / LibreELEC.
-
-## Overview
-
-TKMM-NX transforms your Nintendo Switch into a dedicated mod management console for Tears of the Kingdom. Based on industry-leading lightweight Linux distributions such as Lakka and LibreELEC, while incorporating custom adaptations to seamlessly run TKMM.
+**TKMM-NX** is a Linux operating system based on [Lakka (LibreELEC)](https://github.com/libretro/Lakka-LibreELEC) with custom adaptations that allows the TotK Mod Manager to seamlessly run on the Nintendo Switch, without the need for a PC.
 
 ## Help and Documentation
 
@@ -31,9 +27,20 @@ TKMM-NX transforms your Nintendo Switch into a dedicated mod management console 
 Get the latest OS images to run TKMM on your Switch:
 - **Stable Release:** [Download TKMM OS for Switch](https://tkmm.org/downloads/?tabs=switch)
 
-## Building TKMM OS for Switch
+## Installation
 
-To build your own TKMM OS for Switch, follow these steps:
+After downloading the .zip file, extract the `tkmm` and `bootloader` folders at the root of your SD card.
+
+- boot your Switch into RCM mode
+- inject the Hekate payload
+- go to "More Configs"
+- select "TKMM"
+
+Your Switch should now boot into TKMM-NX.
+
+## Building TKMM-NX
+
+To build your own image, follow these steps:
 
 1. **Clone the Repository:**  
    ```bash
@@ -61,13 +68,6 @@ To build your own TKMM OS for Switch, follow these steps:
    ```bash
    DISTRO=TKMM TKMM_VERSION=<tag_name> PROJECT=L4T DEVICE=Switch ARCH=aarch64 DEVMODE=enabled make image
    ```
-
-4. **Installation:**  
-   - Extract the .zip file from the release.
-   - Copy the contents to the root of your SD card.
-   - Once installed, boot your Switch into RCM mode and inject the Hekate payload.
-   - Go to "More Configs" and select "TKMM".
-   - Your Switch should now boot into TKMM-NX.
 
 ## The Team
 
