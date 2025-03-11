@@ -15,7 +15,7 @@
 
 <br />
 
-**TKMM-NX** is a Linux operating system based on [Lakka (LibreELEC)](https://github.com/libretro/Lakka-LibreELEC) with custom adaptations that allows the TotK Mod Manager to seamlessly run on the Nintendo Switch, without the need for a PC.
+**TKMM-NX** is a Linux operating system based on [Lakka (LibreELEC)](https://github.com/libretro/Lakka-LibreELEC) with custom adaptations that allows the TotK Mod Manager to seamlessly run on the Nintendo Switch, without needing a PC (or needing to modify the partition table on your SD card).
 
 ## Help and Documentation
 
