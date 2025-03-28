@@ -1,6 +1,7 @@
 # Set defaults env variables if they do not exist.
 setenv boot_dir @DISTRO_PATH@
 test -n ${id}                            || setenv id @DISTRO_ID@ 
+test -n ${emmc}                          || setenv emmc 0
 test -n ${fbconsole}                     || setenv fbconsole 9
 test -n ${uart_port}                     || setenv uart_port 0
 test -n ${earlycon}                      || setenv earlycon 0
@@ -183,6 +184,18 @@ if test "${sd_1bit}" = 1; then
 	fdt set /sdhci@700b0000 uhs-mask <0x7F>
 fi
 
+# Enable eMMC.
+fdt set /sdhci@700b0600 status okay
+
+# Check if eMMC is initialized in 1-bit mode.
+if test "${mmc_1bit}" = 1; then
+    echoe eMMC is initialized in 1-bit mode!
+    fdt set /sdhci@700b0600 bus-width <0x1>
+    fdt set /sdhci@700b0600 uhs-mask <0x7F>
+fi
+
+fdt set /sdhci@700b0600 enable-trim
+
 # Enable ALS sensor.
 if test ${als_enable} = 1; then
 	echo ALS sensor enabled
@@ -360,7 +373,7 @@ if test -n ${device_wifi_mac}; then fdt set /chosen nvidia,wifi-mac ${device_wif
 
 
 # Set kernel cmdline.
-setenv bootargs ${bootargs_extra} "boot=/dev/mmcblk0p1 BOOT_IMAGE=@DISTRO_PATH@/KERNEL SYSTEM_IMAGE=@DISTRO_PATH@/SYSTEM nofsck fat32-boot \
+setenv bootargs ${bootargs_extra} "boot=/dev/mmcblk1p1 BOOT_IMAGE=@DISTRO_PATH@/KERNEL SYSTEM_IMAGE=@DISTRO_PATH@/SYSTEM nofsck fat32-boot \
  dock_freq_switch_enabled=${dock_freq_switch_enabled} performance_mode=${performance_mode} \
  firmware_class.path=/usr/lib/firmware access=m2 \
  pmc_r2p.enabled=1 pmc_r2p.action=${r2p_action} \
