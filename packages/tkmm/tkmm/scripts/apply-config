@@ -5,17 +5,20 @@
 
 . /usr/bin/read-config
 
-SCALE_SETTING=$(read_tkmm_config "Display" "scale" "2")
-VOLUME_PERCENT=$(read_tkmm_config "Audio" "volume" "40")
+DEFAULT_VOLUME=40
+DEFAULT_SCALE=2
+
+SCALE_SETTING=$(read_tkmm_config "Display" "scale" "$DEFAULT_SCALE")
+VOLUME_PERCENT=$(read_tkmm_config "Audio" "volume" "$DEFAULT_VOLUME")
 SOUND_CARD_NAME=$(cat /storage/.cache/sound_card)
 
 if ! [ "$SCALE_SETTING" -ge 1 ] || ! [ "$SCALE_SETTING" -le 4 ] || ! [ "$SCALE_SETTING" -eq "$SCALE_SETTING" ] 2>/dev/null; then
-    SCALE_SETTING=2
+    SCALE_SETTING=$DEFAULT_SCALE
     echo "Debug: Scale value is invalid or empty, defaulting to: '$SCALE_SETTING'"
 fi
 
 if ! [ "$VOLUME_PERCENT" -ge 0 ] || ! [ "$VOLUME_PERCENT" -le 100 ] || ! [ "$VOLUME_PERCENT" -eq "$VOLUME_PERCENT" ] 2>/dev/null; then
-    VOLUME_PERCENT=40
+    VOLUME_PERCENT=$DEFAULT_VOLUME
     echo "Debug: Volume value is invalid or empty, defaulting to: '$VOLUME_PERCENT'"
 fi
 
