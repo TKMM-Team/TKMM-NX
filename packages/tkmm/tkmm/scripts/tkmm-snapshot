@@ -1,16 +1,14 @@
 #!/bin/bash
 
-export SNAPSHOT_SOUND="/storage/.cache/snapshot_sound"
-export SOUND_FOLDER="/usr/share/tkmm/audio"
-export SCREENSHOT_FOLDER="/flash/tkmm/screenshots"
-export SOUND_CARD_NAME=$(cat /storage/.cache/sound_card)
+SOUND_FOLDER="/usr/share/tkmm/audio"
+SCREENSHOT_FOLDER="/flash/tkmm/screenshots"
+SOUND_CARD_NAME=$(cat /storage/.cache/sound_card)
+
+. /usr/bin/config-reader
 
 date=$(date '+%Y-%m-%d_%H-%M-%S')
 
-if [ -f "$SNAPSHOT_SOUND" ]; then
-    sound=$(sed 's/\r//; /^[[:space:]]*$/d' "$SNAPSHOT_SOUND" | tail -n 1)
-    echo "Debug: Read sound value from config: '$sound'"
-fi
+sound=$(read_tkmm_config "Snapshot" "sound" "0")
 
 if ! [ "$sound" -ge 0 ] || ! [ "$sound" -le 3 ] || ! [ "$sound" -eq "$sound" ] 2>/dev/null; then
     sound=0
@@ -26,5 +24,5 @@ esac
 
 mkdir -p $SCREENSHOT_FOLDER
 
-aplay -D sysdefault:CARD=$SOUND_CARD_NAME "$SOUND_FOLDER/$sound_file" && \
+aplay -D sysdefault:CARD=$SOUND_CARD_NAME "$SOUND_FOLDER/$sound_file" &
 /usr/local/bin/ffmpeg -f x11grab -i :0.0 -vframes 1 "$SCREENSHOT_FOLDER/screenshot_${date}.png"
