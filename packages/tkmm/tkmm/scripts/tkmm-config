@@ -13,7 +13,6 @@ read_config_value() {
     local config_file="/flash/tkmm/config.ini"
     
     if [ -f "$config_file" ]; then
-        # Use sed to extract the value more reliably
         local value=$(sed -n "/^\[$section\]/,/^\[/p" "$config_file" | \
                      grep "^[[:space:]]*$key[[:space:]]*=" | \
                      sed 's/^[^=]*=[[:space:]]*//;s/[[:space:]]*$//' | \
@@ -43,7 +42,8 @@ VOLUME_PERCENT=$(read_config_value "Audio" "volume" "40")
 case $SCALE_SETTING in
     1) SCALE_FACTOR="0.75x0.75" ;;
     2) SCALE_FACTOR="0.875x0.875" ;;
-    3) SCALE_FACTOR="1.25x1.25" ;;
+    3) SCALE_FACTOR="1x1" ;;
+    4) SCALE_FACTOR="1.25x1.25" ;;
     *) SCALE_FACTOR="0.875x0.875" ;;
 esac
 
