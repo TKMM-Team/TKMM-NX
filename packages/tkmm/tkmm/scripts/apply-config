@@ -9,12 +9,21 @@ SCALE_SETTING=$(read_tkmm_config "Display" "scale" "2")
 VOLUME_PERCENT=$(read_tkmm_config "Audio" "volume" "40")
 SOUND_CARD_NAME=$(cat /storage/.cache/sound_card)
 
+if ! [ "$SCALE_SETTING" -ge 1 ] || ! [ "$SCALE_SETTING" -le 4 ] || ! [ "$SCALE_SETTING" -eq "$SCALE_SETTING" ] 2>/dev/null; then
+    SCALE_SETTING=2
+    echo "Debug: Scale value is invalid or empty, defaulting to: '$SCALE_SETTING'"
+fi
+
+if ! [ "$VOLUME_PERCENT" -ge 0 ] || ! [ "$VOLUME_PERCENT" -le 100 ] || ! [ "$VOLUME_PERCENT" -eq "$VOLUME_PERCENT" ] 2>/dev/null; then
+    VOLUME_PERCENT=40
+    echo "Debug: Volume value is invalid or empty, defaulting to: '$VOLUME_PERCENT'"
+fi
+
 case $SCALE_SETTING in
     1) SCALE_FACTOR="0.75x0.75" ;;
     2) SCALE_FACTOR="0.875x0.875" ;;
     3) SCALE_FACTOR="1x1" ;;
     4) SCALE_FACTOR="1.25x1.25" ;;
-    *) SCALE_FACTOR="0.875x0.875" ;;
 esac
 
 # scale the display for TKMM based on the config file because switch screen small
