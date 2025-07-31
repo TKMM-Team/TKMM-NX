@@ -4,7 +4,7 @@ SOUND_FOLDER="/usr/share/tkmm/audio"
 SCREENSHOT_FOLDER="/flash/tkmm/screenshots"
 SOUND_CARD_NAME=$(cat /storage/.cache/sound_card)
 
-. /usr/bin/config-reader
+. /usr/bin/read-config
 
 date=$(date '+%Y-%m-%d_%H-%M-%S')
 
