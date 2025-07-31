@@ -44,7 +44,8 @@ makeinstall_target() {
 
 post_makeinstall_target() {
   mkdir -p ${INSTALL}/etc/fonts/conf.d
-    cp -v ${PKG_DIR}/conf.d/*.conf ${INSTALL}/etc/fonts/conf.d
+  cp -v ${PKG_DIR}/conf.d/*.conf ${INSTALL}/etc/fonts/conf.d
+  cp -v ${PKG_DIR}/config.ini ${INSTALL}/usr/share/tkmm/
 }
 
 post_install() {
