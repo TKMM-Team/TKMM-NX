@@ -4,11 +4,9 @@ SOUND_FOLDER="/usr/share/tkmm/audio"
 SCREENSHOT_FOLDER="/flash/tkmm/screenshots"
 SOUND_CARD_NAME=$(cat /storage/.cache/sound_card)
 
-. /usr/bin/read-config
-
 date=$(date '+%Y-%m-%d_%H-%M-%S')
 
-sound=$(read_tkmm_config "Snapshot" "sound" "0")
+sound=$(read-config "Snapshot" "sound" "0")
 
 if ! [ "$sound" -ge 0 ] || ! [ "$sound" -le 3 ] || ! [ "$sound" -eq "$sound" ] 2>/dev/null; then
     sound=0

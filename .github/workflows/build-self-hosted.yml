@@ -85,8 +85,15 @@ jobs:
       - name: Normalize zip file name for GitHub release
         working-directory: /home/bubbles/TKMM-NX
         run: |
+          mv releases/*.system releases/SYSTEM
           mv releases/*.zip releases/tkmm-nx.zip
           mv debug/*.zip debug/tkmm-nx-debug.zip
+
+      - name: Create Checksum File
+        working-directory: /home/bubbles/TKMM-NX
+        run: |
+          md5=($(md5sum -b releases/SYSTEM))
+          echo $md5 > releases/SYSTEM.checksum
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
@@ -95,6 +102,8 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           files: |
+            /home/bubbles/TKMM-NX/releases/SYSTEM
+            /home/bubbles/TKMM-NX/releases/SYSTEM.checksum
             /home/bubbles/TKMM-NX/releases/tkmm-nx.zip
             /home/bubbles/TKMM-NX/debug/tkmm-nx-debug.zip
 

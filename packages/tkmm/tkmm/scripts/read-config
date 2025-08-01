@@ -1,39 +1,34 @@
-#!/bin/sh
+#!/bin/bash
 
 # TKMM Config Reader
 # Standalone script for reading values from tkmm/config.ini on the SD card
 
 CONFIG_SOURCE="/usr/share/tkmm/config.ini"
-CONFIG_DEST="/flash/tkmm/config.ini"
+CONFIG_FILE="/flash/tkmm/config.ini"
 
-if [ ! -f "$CONFIG_DEST" ]; then
+if [ ! -f "$CONFIG_FILE" ]; then
     if [ -f "$CONFIG_SOURCE" ]; then
-        cp "$CONFIG_SOURCE" "$CONFIG_DEST"
+        cp "$CONFIG_SOURCE" "$CONFIG_FILE"
     else
         echo "Warning: Source config file not found at $CONFIG_SOURCE"
     fi
 fi
 
-read_tkmm_config() {
-    local section="$1"
-    local key="$2"
-    local default="$3"
-    local config_file="/flash/tkmm/config.ini"
-    
-    if [ -f "$config_file" ]; then
-        local value=$(sed -n "/^\[$section\]/,/^\[/p" "$config_file" | \
-                     grep "^[[:space:]]*$key[[:space:]]*=" | \
-                     sed 's/^[^=]*=[[:space:]]*//;s/[[:space:]]*$//' | \
-                     head -1)
-        
-        if [ -n "$value" ]; then
-            echo "$value"
-        else
-            echo "$default"
-        fi
+section="$1"
+key="$2"
+default="$3"
+
+if [ -f "$CONFIG_FILE" ]; then
+    value=$(sed -n "/^\[$section\]/,/^\[/p" "$CONFIG_FILE" | \
+             grep "^[[:space:]]*$key[[:space:]]*=" | \
+             sed 's/^[^=]*=[[:space:]]*//;s/[[:space:]]*$//' | \
+             head -1)
+
+    if [ -n "$value" ]; then
+        echo "$value"
     else
         echo "$default"
     fi
-}
-
-export -f read_tkmm_config
+else
+    echo "$default"
+fi

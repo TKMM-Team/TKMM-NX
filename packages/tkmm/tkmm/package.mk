@@ -10,7 +10,7 @@ PKG_TOOLCHAIN="manual"
 
 case "${TKMM_VERSION}" in
   "0.0.0")
-    PKG_VERSION="0930c30c373c96a67467d96275b52d5e6a7adadb"
+    PKG_VERSION="104b63d7ef0acf6bf6e64cb6f260f90c122b0909"
     ;;
   *)
     PKG_VERSION="${TKMM_VERSION}"
@@ -35,6 +35,7 @@ pre_make_target() {
 
 makeinstall_target() {
   mkdir -p ${INSTALL}/usr/share/tkmm/
+  chmod +x ${INSTALL}/usr/bin/*
   cp -r ${PKG_DIR}/fonts ${INSTALL}/usr/share/tkmm/fonts
   cp -r ${PKG_DIR}/audio ${INSTALL}/usr/share/tkmm/audio
   dotnet publish src/Tkmm ${PKG_BUILD_FLAGS} -o ${INSTALL}/tkmm/tmp

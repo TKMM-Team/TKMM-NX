@@ -1,16 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 
 # TKMM Configuration Script
 # This script sets the volume and display scale based on the config file
 
-. /usr/bin/read-config
-
 DEFAULT_VOLUME=40
 DEFAULT_SCALE=2
 
-SCALE_SETTING=$(read_tkmm_config "Display" "scale" "$DEFAULT_SCALE")
-VOLUME_PERCENT=$(read_tkmm_config "Audio" "volume" "$DEFAULT_VOLUME")
+SCALE_SETTING=$(read-config "Display" "scale" "$DEFAULT_SCALE")
+VOLUME_PERCENT=$(read-config "Audio" "volume" "$DEFAULT_VOLUME")
 SOUND_CARD_NAME=$(cat /storage/.cache/sound_card)
+DISPLAY_NAME=$(cat /storage/.cache/display_name)
 
 if ! [ "$SCALE_SETTING" -ge 1 ] || ! [ "$SCALE_SETTING" -le 4 ] || ! [ "$SCALE_SETTING" -eq "$SCALE_SETTING" ] 2>/dev/null; then
     SCALE_SETTING=$DEFAULT_SCALE
@@ -26,11 +25,15 @@ case $SCALE_SETTING in
     1) SCALE_FACTOR="0.75x0.75" ;;
     2) SCALE_FACTOR="0.875x0.875" ;;
     3) SCALE_FACTOR="1x1" ;;
-    4) SCALE_FACTOR="1.25x1.25" ;;
+    4) SCALE_FACTOR="1.125x1.125" ;;
+    5) SCALE_FACTOR="1.25x1.25" ;;
 esac
 
+# reset the scale to 1x1 first to force it to refresh
+xrandr --output "$DISPLAY_NAME" --scale "1x1" >/dev/null 2>&1
+
 # scale the display for TKMM based on the config file because switch screen small
-xrandr --output "$(xrandr | awk '/ connected / { print $1; exit }')" --scale $SCALE_FACTOR
+xrandr --output "$DISPLAY_NAME" --scale $SCALE_FACTOR >/dev/null 2>&1
 
 # set the sound card to configured volume
 amixer -c "$SOUND_CARD_NAME" set 'x Speaker' "${VOLUME_PERCENT}%" >/dev/null 2>&1

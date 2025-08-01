@@ -1,1 +1,2 @@
 *.patch text diff eol=lf
+packages/tkmm/tkmm/scripts/* text eol=lf
