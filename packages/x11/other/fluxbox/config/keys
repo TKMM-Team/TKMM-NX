@@ -20,6 +20,3 @@ OnWindow Mod1 Mouse3 :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
 
 # Take screenshot
 XF86Launch1 :ExecCommand sh /usr/bin/tkmm-snapshot
-
-# Assigned to + button as a workaround to reset the display scale after waking from sleep
-XF86Launch9 :ExecCommand sh /usr/bin/apply-config

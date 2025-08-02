@@ -7,6 +7,7 @@ After=graphical.target
 Type=oneshot
 Environment=HOME=/storage
 ExecStart=-/bin/sh -c ". /etc/profile; exec /bin/sh /storage/.config/autostart.sh"
+ExecStartPost=/usr/bin/apply-config
 RemainAfterExit=yes
 
 [Install]

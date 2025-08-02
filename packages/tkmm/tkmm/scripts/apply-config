@@ -11,7 +11,7 @@ VOLUME_PERCENT=$(read-config "Audio" "volume" "$DEFAULT_VOLUME")
 SOUND_CARD_NAME=$(cat /storage/.cache/sound_card)
 DISPLAY_NAME=$(cat /storage/.cache/display_name)
 
-if ! [ "$SCALE_SETTING" -ge 1 ] || ! [ "$SCALE_SETTING" -le 4 ] || ! [ "$SCALE_SETTING" -eq "$SCALE_SETTING" ] 2>/dev/null; then
+if ! [ "$SCALE_SETTING" -ge 1 ] || ! [ "$SCALE_SETTING" -le 5 ] || ! [ "$SCALE_SETTING" -eq "$SCALE_SETTING" ] 2>/dev/null; then
     SCALE_SETTING=$DEFAULT_SCALE
     echo "Debug: Scale value is invalid or empty, defaulting to: '$SCALE_SETTING'"
 fi
@@ -37,9 +37,3 @@ xrandr --output "$DISPLAY_NAME" --scale $SCALE_FACTOR >/dev/null 2>&1
 
 # set the sound card to configured volume
 amixer -c "$SOUND_CARD_NAME" set 'x Speaker' "${VOLUME_PERCENT}%" >/dev/null 2>&1
-
-# ensure apply-config hotkey is set in fluxbox keys
-HOTKEY_STRING="XF86Launch9 :ExecCommand sh /usr/bin/apply-config"
-if ! grep -q "$HOTKEY_STRING" "/storage/.fluxbox/keys" 2>/dev/null; then
-    echo "$HOTKEY_STRING" >> "/storage/.fluxbox/keys"
-fi

@@ -53,4 +53,5 @@ post_install() {
   enable_service tkmm.target
   enable_service tkmm-autostart.service
   enable_service tkmm.service
+  enable_service tkmm-wake-config.service
 }

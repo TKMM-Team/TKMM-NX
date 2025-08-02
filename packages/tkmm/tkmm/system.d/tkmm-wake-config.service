@@ -1,0 +1,15 @@
+[Unit]
+Description=Apply OS Config on Wake
+Requires=graphical.target
+After=graphical.target
+
+[Service]
+Type=simple
+Environment="DISPLAY=:0.0"
+ExecStart=/bin/sh -c 'journalctl -u systemd-suspend.service -f | while read line; do if echo "$line" | grep -q "System resumed"; then sleep 1 && /usr/bin/apply-config; fi; done'
+Restart=always
+RestartSec=1
+User=root
+
+[Install]
+WantedBy=tkmm.service
