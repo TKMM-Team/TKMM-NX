@@ -27,7 +27,7 @@ r2c() {
 	echo $1 > /sys/devices/r2p/action
 	echo $2 > /sys/devices/r2p/param1
 	echo $3 > /sys/devices/r2p/param2
-	reboot
+	tkmm-reboot
 }
 
 show_menu() {
