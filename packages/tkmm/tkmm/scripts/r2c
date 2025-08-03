@@ -1,0 +1,244 @@
+#!/bin/bash
+
+BOOTSTACK="flash"
+
+error() {
+	echo -e "\e[91m$1\e[0m" 1>&2
+	echo "ERROR: $1"
+	exit 1
+}
+
+status() { 
+	echo -e "\e[96m$1\e[0m"
+}
+
+status_green() { 
+	echo -e "\e[92m$1\e[0m"
+}
+
+cleanup() {
+	[ -z "$temp_folder" ] && error "cleanup(): temp_folder variable not set"
+	status "Cleaning up temporary files" >&2
+	rm -rf $temp_folder
+}
+
+r2c() {
+	cleanup
+	echo $1 > /sys/devices/r2p/action
+	echo $2 > /sys/devices/r2p/param1
+	echo $3 > /sys/devices/r2p/param2
+	reboot
+}
+
+show_menu() {
+	echo ""
+	echo "=========================================="
+	echo "           Reboot 2 Config"
+	echo "=========================================="
+	echo "Choose an entry to reboot to:"
+	echo ""
+	echo "1) Launch"
+	echo "2) More Configs"
+	echo "3) UMS"
+	echo "4) hekate menu"
+	echo "5) Normal Reboot"
+	echo "0) Exit"
+	echo "=========================================="
+	
+	read -p "Enter your choice (0-5): " choice
+	case $choice in
+		0) exit 0 ;;
+		1) show_launch_menu ;;
+		2) show_more_configs_menu ;;
+		3) show_ums_menu ;;
+		4) r2c "bootloader" 0 0 ;;
+		5) r2c "normal" 0 0 ;;
+		*) echo "Invalid choice. Please enter a number between 0 and 5." ;;
+	esac
+}
+
+parse_ini_sections() {
+	local ini_file="$1"
+	local sections=""
+	
+	if [ -f "$ini_file" ]; then
+		sections=$(cat "$ini_file" | sed 's/\r$//' | grep '^\[.*\]' | grep -v '^\[config\]')
+	fi
+	
+	echo "$sections"
+}
+
+show_launch_menu() {
+	status_green "Launch Section"
+	local ini_file="/${BOOTSTACK}/bootloader/hekate_ipl.ini"
+	local sections=$(parse_ini_sections "$ini_file")
+	
+	if [ -z "$sections" ]; then
+		echo "No launch entries found in $ini_file"
+		return
+	fi
+	
+	echo ""
+	echo "Available launch entries:"
+	echo "0) Back"
+	
+	local count=1
+	echo "$sections" | while read -r section; do
+		section_name="${section//[}"
+		section_name="${section_name//]}"
+		printf "%d) %s\n" "$count" "$section_name"
+		count=$((count + 1))
+	done
+	
+	echo "=========================================="
+	read -p "Enter your choice: " choice
+	
+	if [ "$choice" = "0" ]; then
+		return
+	elif [ "$choice" -ge 1 ] && [ "$choice" -le $((count-1)) ]; then
+		r2c "self" "$choice" 0
+	else
+		echo "Invalid choice."
+	fi
+}
+
+show_more_configs_menu() {
+	status_green "More Configs Section"
+	
+	local ini_files=""
+	for file in /${BOOTSTACK}/bootloader/ini/*.ini; do
+		if [ -f "$file" ]; then
+			ini_files="$ini_files $file"
+		fi
+	done
+	
+	if [ -z "$ini_files" ]; then
+		echo "No additional config files found in /${BOOTSTACK}/bootloader/ini/"
+		return
+	fi
+	
+	echo ""
+	echo "Available config files:"
+	echo "0) Back"
+	
+	local all_entries=""
+	local count=1
+	
+	for ini_file in $ini_files; do
+		local sections=$(parse_ini_sections "$ini_file")
+		echo "$sections" > /tmp/sections.tmp
+		while read -r section; do
+			if [ -n "$section" ]; then
+				section_name="${section//[}"
+				section_name="${section_name//]}"
+				printf "%d) %s\n" "$count" "$section_name"
+				all_entries="$all_entries $section_name"
+				count=$((count + 1))
+			fi
+		done < /tmp/sections.tmp
+		rm -f /tmp/sections.tmp
+	done
+	
+	echo "=========================================="
+	read -p "Enter your choice: " choice
+	
+	if [ "$choice" = "0" ]; then
+		return
+	elif [ "$choice" -ge 1 ] && [ "$choice" -lt $count ]; then
+		r2c "self" "$choice" 1
+	else
+		echo "Invalid choice. Please enter a number between 0 and $((count-1))."
+	fi
+}
+
+show_ums_menu() {
+	status_green "UMS Section"
+	echo ""
+	echo "UMS Options:"
+	echo "0) Back"
+	echo "1) SD Card"
+	echo "2) eMMC BOOT0"
+	echo "3) eMMC BOOT1"
+	echo "4) eMMC GPP"
+	echo "5) emuMMC BOOT0"
+	echo "6) emuMMC BOOT1"
+	echo "7) emuMMC GPP"
+	echo "=========================================="
+	
+	read -p "Enter your choice (0-7): " choice
+	
+	case $choice in
+		0) return ;;
+		1) r2c "ums" 0 0 ;;
+		2) r2c "ums" 1 0 ;;
+		3) r2c "ums" 2 0 ;;
+		4) r2c "ums" 3 0 ;;
+		5) r2c "ums" 4 0 ;;
+		6) r2c "ums" 5 0 ;;
+		7) r2c "ums" 6 0 ;;
+		*) echo "Invalid choice. Please enter a number between 0 and 7." ;;
+	esac
+}
+
+temp_folder=$(mktemp -d)
+cd $temp_folder
+
+if [ $# -gt 0 ]; then
+	case "$1" in
+		"launch")
+			if [ $# -ge 2 ] && [ "$2" -ge 1 ]; then
+				r2c "self" "$2" 0
+			else
+				echo "Usage: $0 launch <entry_number>"
+				exit 1
+			fi
+			;;
+		"config")
+			if [ $# -ge 2 ] && [ "$2" -ge 1 ]; then
+				r2c "self" "$2" 1
+			else
+				echo "Usage: $0 config <entry_number>"
+				exit 1
+			fi
+			;;
+		"ums")
+			if [ $# -ge 2 ] && [ "$2" -ge 0 ] && [ "$2" -le 6 ]; then
+				r2c "ums" "$2" 0
+			else
+				echo "Usage: $0 ums <0-6>"
+				echo "  0 = SD Card"
+				echo "  1 = eMMC BOOT0"
+				echo "  2 = eMMC BOOT1"
+				echo "  3 = eMMC GPP"
+				echo "  4 = emuMMC BOOT0"
+				echo "  5 = emuMMC BOOT1"
+				echo "  6 = emuMMC GPP"
+				exit 1
+			fi
+			;;
+		"bootloader")
+			r2c "bootloader" 0 0
+			;;
+		"normal")
+			r2c "normal" 0 0
+			;;
+		*)
+			echo "Usage: $0 [launch|config|ums|bootloader|normal] [entry_number]"
+			echo "  launch <n>     - Reboot to launch entry n"
+			echo "  config <n>     - Reboot to config entry n"
+			echo "  ums <n>        - Reboot to UMS mode n"
+			echo "  bootloader     - Reboot to hekate bootloader"
+			echo "  normal         - Normal reboot"
+			echo ""
+			echo "Without arguments, shows interactive menu"
+			exit 1
+			;;
+	esac
+fi
+
+while true; do
+	show_menu
+done
+
+cleanup
+exit 0
