@@ -2,9 +2,9 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="ffmpegx"
-PKG_VERSION="4.4.3"
-PKG_SHA256="6c5b6c195e61534766a0b5fe16acc919170c883362612816d0a1c7f4f947006e"
-PKG_LICENSE="LGPLv2.1+"
+PKG_VERSION="7.1.1"
+PKG_SHA256="733984395e0dbbe5c046abda2dc49a5544e7e0e1e2366bba849222ae9e3a03b1"
+PKG_LICENSE="GPL-3.0-only"
 PKG_SITE="https://ffmpeg.org"
 PKG_URL="https://ffmpeg.org/releases/ffmpeg-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_TARGET="toolchain aom bzip2 openssl lame libvorbis opus x264 zlib"
@@ -35,7 +35,7 @@ pre_configure_target() {
   cd ${PKG_BUILD}
   rm -rf .${TARGET_NAME}
 
-# HW encoders
+  # HW encoders
 
   # Generic
   if [[ "${TARGET_ARCH}" = "x86_64" ]]; then
@@ -64,12 +64,12 @@ pre_configure_target() {
 
     PKG_FFMPEG_X26x_GENERIC="\
     --enable-libx264 \
-    --enable-encoder=x264 \
+    --enable-encoder=libx264 \
     --enable-libx265 \
-    --enable-encoder=x265"
+    --enable-encoder=libx265"
   fi
 
-# Encoders
+  # Encoders
     PKG_FFMPEG_ENCODERS="\
     `#Video encoders` \
     --enable-libvpx \
@@ -91,7 +91,7 @@ pre_configure_target() {
     --enable-libvorbis \
     --enable-encoder=libvorbis"
 
-# X11 grab for screen recording
+  # X11 grab for screen recording
   if [ "${DISPLAYSERVER}" = "x11" ]; then
     PKG_FFMPEG_LIBS+=" -lX11"
     PKG_FFMPEG_X11_GRAB="\
@@ -134,7 +134,6 @@ configure_target() {
     ${PKG_FFMPEG_ENCODERS} \
     \
     `#General options` \
-    --enable-avresample \
     --disable-lzma \
     --disable-alsa \
     ${PKG_FFMPEG_X11_GRAB} \
