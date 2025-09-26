@@ -4,14 +4,13 @@
 # This script sets the volume and display scale based on the config file
 
 DEFAULT_VOLUME=40
-DEFAULT_SCALE=2
+DEFAULT_SCALE=1.00
 
 SCALE_SETTING=$(read-config "Display" "scale" "$DEFAULT_SCALE")
 VOLUME_PERCENT=$(read-config "Audio" "volume" "$DEFAULT_VOLUME")
 SOUND_CARD_NAME=$(cat /storage/.cache/sound_card)
-DISPLAY_NAME=$(cat /storage/.cache/display_name)
 
-if ! [ "$SCALE_SETTING" -ge 1 ] || ! [ "$SCALE_SETTING" -le 5 ] || ! [ "$SCALE_SETTING" -eq "$SCALE_SETTING" ] 2>/dev/null; then
+if ! [ "$SCALE_SETTING" -ge 0.50 ] || ! [ "$SCALE_SETTING" -le 2.00 ] || ! [ "$SCALE_SETTING" -eq "$SCALE_SETTING" ] 2>/dev/null; then
     SCALE_SETTING=$DEFAULT_SCALE
     echo "Config Error: Scale value is invalid or empty, defaulting to: '$SCALE_SETTING'"
 fi
@@ -21,19 +20,7 @@ if ! [ "$VOLUME_PERCENT" -ge 0 ] || ! [ "$VOLUME_PERCENT" -le 100 ] || ! [ "$VOL
     echo "Config Error: Volume value is invalid or empty, defaulting to: '$VOLUME_PERCENT'"
 fi
 
-case $SCALE_SETTING in
-    1) SCALE_FACTOR="0.75x0.75" ;;
-    2) SCALE_FACTOR="0.875x0.875" ;;
-    3) SCALE_FACTOR="1x1" ;;
-    4) SCALE_FACTOR="1.125x1.125" ;;
-    5) SCALE_FACTOR="1.25x1.25" ;;
-esac
-
-# reset the scale to 1x1 first to force it to refresh
-xrandr --output "$DISPLAY_NAME" --scale "1x1" >/dev/null 2>&1
-
-# scale the display for TKMM based on the config file because switch screen small
-xrandr --output "$DISPLAY_NAME" --scale $SCALE_FACTOR >/dev/null 2>&1
+export AVALONIA_GLOBAL_SCALE_FACTOR=$SCALE_SETTING
 
 # set the sound card to configured volume
 amixer -c "$SOUND_CARD_NAME" set 'x Speaker' "${VOLUME_PERCENT}%" >/dev/null 2>&1
