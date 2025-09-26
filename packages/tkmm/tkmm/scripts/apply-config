@@ -4,15 +4,15 @@
 # This script sets the volume and display scale based on the config file
 
 DEFAULT_VOLUME=40
-DEFAULT_SCALE=1.00
+DEFAULT_SCALE_PERCENT=100
 
-SCALE_SETTING=$(read-config "Display" "scale" "$DEFAULT_SCALE")
+SCALE_PERCENT=$(read-config "Display" "scale" "$DEFAULT_SCALE_PERCENT")
 VOLUME_PERCENT=$(read-config "Audio" "volume" "$DEFAULT_VOLUME")
 SOUND_CARD_NAME=$(cat /storage/.cache/sound_card)
 
-if ! [ "$SCALE_SETTING" -ge 0.50 ] || ! [ "$SCALE_SETTING" -le 2.00 ] || ! [ "$SCALE_SETTING" -eq "$SCALE_SETTING" ] 2>/dev/null; then
-    SCALE_SETTING=$DEFAULT_SCALE
-    echo "Config Error: Scale value is invalid or empty, defaulting to: '$SCALE_SETTING'"
+if ! [ "$SCALE_PERCENT" -ge 50 ] || ! [ "$SCALE_PERCENT" -le 200 ] || ! [ "$SCALE_PERCENT" -eq "$SCALE_PERCENT" ] 2>/dev/null; then
+    SCALE_PERCENT=$DEFAULT_SCALE_PERCENT
+    echo "Config Error: Scale value is invalid or empty, defaulting to: '$SCALE_PERCENT'"
 fi
 
 if ! [ "$VOLUME_PERCENT" -ge 0 ] || ! [ "$VOLUME_PERCENT" -le 100 ] || ! [ "$VOLUME_PERCENT" -eq "$VOLUME_PERCENT" ] 2>/dev/null; then
@@ -20,7 +20,12 @@ if ! [ "$VOLUME_PERCENT" -ge 0 ] || ! [ "$VOLUME_PERCENT" -le 100 ] || ! [ "$VOL
     echo "Config Error: Volume value is invalid or empty, defaulting to: '$VOLUME_PERCENT'"
 fi
 
-export AVALONIA_GLOBAL_SCALE_FACTOR=$SCALE_SETTING
+if [ "$SCALE_PERCENT" -le 99 ]; then
+    SCALE_FACTOR="0.${SCALE_PERCENT}"
+else
+    SCALE_FACTOR="${SCALE_PERCENT:0:1}.${SCALE_PERCENT:1}"
+fi
+export AVALONIA_GLOBAL_SCALE_FACTOR=$SCALE_FACTOR
 
 # set the sound card to configured volume
 amixer -c "$SOUND_CARD_NAME" set 'x Speaker' "${VOLUME_PERCENT}%" >/dev/null 2>&1
