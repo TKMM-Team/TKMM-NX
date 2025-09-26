@@ -25,7 +25,7 @@ if [ "$SCALE_PERCENT" -le 99 ]; then
 else
     SCALE_FACTOR="${SCALE_PERCENT:0:1}.${SCALE_PERCENT:1}"
 fi
-export AVALONIA_GLOBAL_SCALE_FACTOR=$SCALE_FACTOR
+echo "AVALONIA_GLOBAL_SCALE_FACTOR=$SCALE_FACTOR" > /storage/.cache/env_variables
 
 # set the sound card to configured volume
 amixer -c "$SOUND_CARD_NAME" set 'x Speaker' "${VOLUME_PERCENT}%" >/dev/null 2>&1

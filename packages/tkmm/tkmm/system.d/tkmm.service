@@ -9,7 +9,8 @@ Environment="DOTNET_ROOT=/usr/local/share/dotnet"
 Environment="PATH=/usr/local/share/dotnet:/storage/apps:/storage/apps/git/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 Environment="HOME=/storage"
 Environment="LD_LIBRARY_PATH=/usr/lib:/usr/lib/pulseaudio"
-ExecStartPost=/usr/bin/apply-config
+EnvironmentFile=/storage/.cache/env_variables
+ExecStartPre=/usr/bin/apply-config
 ExecStart=/storage/.tkmm/Tkmm
 WorkingDirectory=/storage
 KillMode=process
