@@ -13,12 +13,12 @@ DISPLAY_NAME=$(cat /storage/.cache/display_name)
 
 if ! [ "$SCALE_SETTING" -ge 1 ] || ! [ "$SCALE_SETTING" -le 5 ] || ! [ "$SCALE_SETTING" -eq "$SCALE_SETTING" ] 2>/dev/null; then
     SCALE_SETTING=$DEFAULT_SCALE
-    echo "Debug: Scale value is invalid or empty, defaulting to: '$SCALE_SETTING'"
+    echo "Config Error: Scale value is invalid or empty, defaulting to: '$SCALE_SETTING'"
 fi
 
 if ! [ "$VOLUME_PERCENT" -ge 0 ] || ! [ "$VOLUME_PERCENT" -le 100 ] || ! [ "$VOLUME_PERCENT" -eq "$VOLUME_PERCENT" ] 2>/dev/null; then
     VOLUME_PERCENT=$DEFAULT_VOLUME
-    echo "Debug: Volume value is invalid or empty, defaulting to: '$VOLUME_PERCENT'"
+    echo "Config Error: Volume value is invalid or empty, defaulting to: '$VOLUME_PERCENT'"
 fi
 
 case $SCALE_SETTING in
