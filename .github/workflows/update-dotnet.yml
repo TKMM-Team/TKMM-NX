@@ -1,0 +1,131 @@
+name: Update .NET Packages
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update-dotnet-packages:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Get latest .NET versions
+      id: get-versions
+      run: |
+        # Get latest .NET 9.0 versions using Microsoft's official feeds (same as dotnet-install.sh)
+        echo "Fetching latest .NET 9.0 versions from Microsoft feeds..."
+        
+        # Get latest runtime version from Microsoft's official feed
+        RUNTIME_VERSION=$(curl -s "https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0/latest.version" | tail -n 1 | sed 's/\r$//')
+        echo "Latest .NET Runtime version: $RUNTIME_VERSION"
+        
+        # Get latest SDK version from Microsoft's official feed
+        SDK_VERSION=$(curl -s "https://builds.dotnet.microsoft.com/dotnet/Sdk/9.0/latest.version" | tail -n 1 | sed 's/\r$//')
+        echo "Latest .NET SDK version: $SDK_VERSION"
+        
+        # Set outputs
+        echo "runtime_version=$RUNTIME_VERSION" >> $GITHUB_OUTPUT
+        echo "sdk_version=$SDK_VERSION" >> $GITHUB_OUTPUT
+
+    - name: Download and calculate checksums
+      id: checksums
+      run: |
+        # Download runtime and calculate SHA256
+        RUNTIME_URL="https://builds.dotnet.microsoft.com/dotnet/Runtime/${{ steps.get-versions.outputs.runtime_version }}/dotnet-runtime-${{ steps.get-versions.outputs.runtime_version }}-linux-arm64.tar.gz"
+        echo "Downloading runtime from: $RUNTIME_URL"
+        wget -q "$RUNTIME_URL" -O runtime.tar.gz
+        RUNTIME_SHA256=$(sha256sum runtime.tar.gz | cut -d' ' -f1)
+        echo "Runtime SHA256: $RUNTIME_SHA256"
+        
+        # Download SDK and calculate SHA256
+        SDK_URL="https://builds.dotnet.microsoft.com/dotnet/Sdk/${{ steps.get-versions.outputs.sdk_version }}/dotnet-sdk-${{ steps.get-versions.outputs.sdk_version }}-linux-arm64.tar.gz"
+        echo "Downloading SDK from: $SDK_URL"
+        wget -q "$SDK_URL" -O sdk.tar.gz
+        SDK_SHA256=$(sha256sum sdk.tar.gz | cut -d' ' -f1)
+        echo "SDK SHA256: $SDK_SHA256"
+        
+        # Set outputs
+        echo "runtime_sha256=$RUNTIME_SHA256" >> $GITHUB_OUTPUT
+        echo "sdk_sha256=$SDK_SHA256" >> $GITHUB_OUTPUT
+        
+        # Clean up
+        rm -f runtime.tar.gz sdk.tar.gz
+
+    - name: Update dotnet-runtime package.mk
+      run: |
+        RUNTIME_FILE="packages/tkmm/dotnet-runtime/package.mk"
+        
+        # Check if version needs updating
+        CURRENT_VERSION=$(grep 'PKG_VERSION=' "$RUNTIME_FILE" | cut -d'"' -f2)
+        NEW_VERSION="${{ steps.get-versions.outputs.runtime_version }}"
+        
+        if [ "$CURRENT_VERSION" != "$NEW_VERSION" ]; then
+          echo "Updating dotnet-runtime from $CURRENT_VERSION to $NEW_VERSION"
+          
+          # Update version
+          sed -i "s/PKG_VERSION=\"[^\"]*\"/PKG_VERSION=\"$NEW_VERSION\"/" "$RUNTIME_FILE"
+          
+          # Update SHA256
+          sed -i "s/PKG_SHA256=\"[^\"]*\"/PKG_SHA256=\"${{ steps.checksums.outputs.runtime_sha256 }}\"/" "$RUNTIME_FILE"
+          
+          echo "Updated dotnet-runtime package.mk"
+        else
+          echo "dotnet-runtime is already up to date ($CURRENT_VERSION)"
+        fi
+
+    - name: Update dotnet-sdk package.mk
+      run: |
+        SDK_FILE="packages/tkmm/dotnet-sdk/package.mk"
+        
+        # Check if version needs updating
+        CURRENT_VERSION=$(grep 'PKG_VERSION=' "$SDK_FILE" | cut -d'"' -f2)
+        NEW_VERSION="${{ steps.get-versions.outputs.sdk_version }}"
+        
+        if [ "$CURRENT_VERSION" != "$NEW_VERSION" ]; then
+          echo "Updating dotnet-sdk from $CURRENT_VERSION to $NEW_VERSION"
+          
+          # Update version
+          sed -i "s/PKG_VERSION=\"[^\"]*\"/PKG_VERSION=\"$NEW_VERSION\"/" "$SDK_FILE"
+          
+          # Update SHA256
+          sed -i "s/PKG_SHA256=\"[^\"]*\"/PKG_SHA256=\"${{ steps.checksums.outputs.sdk_sha256 }}\"/" "$SDK_FILE"
+          
+          echo "Updated dotnet-sdk package.mk"
+        else
+          echo "dotnet-sdk is already up to date ($CURRENT_VERSION)"
+        fi
+
+    - name: Check for changes
+      id: check-changes
+      run: |
+        if git diff --quiet; then
+          echo "No changes detected"
+          echo "has_changes=false" >> $GITHUB_OUTPUT
+        else
+          echo "Changes detected"
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Commit and push changes
+      if: steps.check-changes.outputs.has_changes == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add packages/tkmm/dotnet-runtime/package.mk packages/tkmm/dotnet-sdk/package.mk
+        git commit -m "Update .NET packages to latest versions
+
+        - dotnet-runtime: Updated to ${{ steps.get-versions.outputs.runtime_version }}
+        - dotnet-sdk: Updated to ${{ steps.get-versions.outputs.sdk_version }}
+        
+        This update was automatically generated by the GitHub Actions workflow."
+        git push

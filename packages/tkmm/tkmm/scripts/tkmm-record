@@ -1,0 +1,12 @@
+#!/bin/bash
+
+VIDEO_FOLDER="/flash/tkmm/videos"
+
+date=$(date '+%Y-%m-%d_%H-%M-%S')
+
+mkdir -p $VIDEO_FOLDER
+
+echo "Starting video recording... Press Ctrl+C to stop"
+echo "Recording to: $VIDEO_FOLDER/video_${date}.mp4"
+
+/usr/local/bin/ffmpeg -f x11grab -framerate 30 -i :0.0 -c:v mpeg4 -q:v 3 -pix_fmt yuv420p "$VIDEO_FOLDER/video_${date}.mp4"
