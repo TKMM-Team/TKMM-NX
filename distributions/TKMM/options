@@ -20,7 +20,7 @@
   GREETING1="# TKMM - The easiest way to manage your mods #"
   GREETING2="# ......... visit https://tkmm.org ......... #"
   GREETING3="##############################################"
-  GREETING4=""
+  GREETING4=$(cat distributions/TKMM/motd)
 
 # Root password to integrate in the target system
   ROOT_PASSWORD="tkmm"
