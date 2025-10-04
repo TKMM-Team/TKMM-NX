@@ -1,0 +1,11 @@
+#!/bin/sh
+url="$1"
+
+case "$url" in
+  tkmm://*)
+    /storage/.tkmm/Tkmm "$url" &
+    ;;
+  *)
+    echo "No handler for $url" >&2
+    ;;
+esac
