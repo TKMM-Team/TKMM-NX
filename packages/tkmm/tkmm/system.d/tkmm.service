@@ -4,6 +4,8 @@ Requires=graphical.target
 After=graphical.target
 
 [Service]
+User=TKMM
+Group=TKMM
 Environment="DISPLAY=:0.0"
 Environment="DOTNET_ROOT=/usr/local/share/dotnet"
 Environment="PATH=/usr/local/share/dotnet:/storage/apps:/storage/apps/git/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -20,7 +22,6 @@ Restart=always
 RestartSec=0
 StartLimitInterval=0
 Type=simple
-User=root
 
 [Install]
 WantedBy=tkmm.target
