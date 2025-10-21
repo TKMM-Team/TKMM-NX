@@ -10,7 +10,7 @@ PKG_TOOLCHAIN="manual"
 
 case "${TKMM_VERSION}" in
   "0.0.0")
-    PKG_VERSION="104b63d7ef0acf6bf6e64cb6f260f90c122b0909"
+    PKG_VERSION="master"
     ;;
   *)
     PKG_VERSION="${TKMM_VERSION}"
