@@ -11,7 +11,7 @@ Environment="HOME=/storage"
 Environment="LD_LIBRARY_PATH=/usr/lib:/usr/lib/pulseaudio"
 EnvironmentFile=/storage/.cache/env_variables
 ExecStartPre=/usr/bin/apply-config
-ExecStart=/storage/.tkmm/Tkmm
+ExecStart=/run/tkmm_launch.sh
 WorkingDirectory=/storage
 KillMode=process
 TimeoutStartSec=60s

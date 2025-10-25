@@ -38,9 +38,7 @@ makeinstall_target() {
   chmod +x ${INSTALL}/usr/bin/*
   cp -r ${PKG_DIR}/fonts ${INSTALL}/usr/share/tkmm/fonts
   cp -r ${PKG_DIR}/audio ${INSTALL}/usr/share/tkmm/audio
-  dotnet publish src/Tkmm ${PKG_BUILD_FLAGS} -o ${INSTALL}/tkmm/tmp
-  tar -cvf ${INSTALL}/tkmm/tkmm.tar.gz -C ${INSTALL}/tkmm/tmp .
-  rm -rf ${INSTALL}/tkmm/tmp
+  dotnet publish src/Tkmm ${PKG_BUILD_FLAGS} -o ${INSTALL}/usr/bin
 }
 
 post_makeinstall_target() {

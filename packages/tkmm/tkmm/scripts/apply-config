@@ -3,6 +3,23 @@
 # TKMM Configuration Script
 # This script sets the volume and display scale based on the config file
 
+# Set ownership and permissions for TKMM
+# These may fail on FAT32 partitions, so we ignore errors
+chown -R TKMM:TKMM /storage/.net 2>/dev/null || true
+chown -R TKMM:TKMM /storage/.tkmm 2>/dev/null || true
+chmod -R 755 /storage/.net 2>/dev/null || true
+chmod -R 755 /storage/.tkmm 2>/dev/null || true
+chmod +x /storage/.tkmm/Tkmm 2>/dev/null || true
+
+rm /run/tkmm_launch.sh
+echo '#!/bin/sh' >  /run/tkmm_launch.sh
+if  [ -f /storage/.tkmm/Tkmm ]; then
+  echo /storage/.tkmm/Tkmm $1 >> /run/tkmm_launch.sh
+else
+  echo Tkmm $1 >> /run/tkmm_launch.sh
+fi
+chmod +x /run/tkmm_launch.sh
+
 DEFAULT_VOLUME=40
 DEFAULT_SCALE_PERCENT=100
 
