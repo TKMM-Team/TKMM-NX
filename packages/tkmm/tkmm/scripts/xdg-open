@@ -3,7 +3,7 @@ url="$1"
 
 case "$url" in
   tkmm://*)
-    /storage/.tkmm/Tkmm "$url" &
+    /run/tkmm_launch.sh "$url" &
     ;;
   *)
     echo "No handler for $url" >&2
