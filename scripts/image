@@ -407,11 +407,6 @@ if [ "${1}" = "release" -o "${1}" = "mkimage" -o "${1}" = "noobs" ]; then
       mv ${RELEASE_DIR}/${DISTRO_PATH}/boot/nx-plat.dtimg ${RELEASE_DIR}/${DISTRO_PATH}/
     fi
     mkdir -p ${RELEASE_DIR}/${DISTRO_PATH}/storage
-    if [ "${DISTRO}" = "TKMM" ]; then
-      mkdir -p ${RELEASE_DIR}/${DISTRO_PATH}/storage/.tkmm/
-      tar -xf temp_tkmm/tkmm.tar.gz -C ${RELEASE_DIR}/${DISTRO_PATH}/storage/.tkmm/
-      rm -rf temp_tkmm/
-    fi
     cp ${TARGET_IMG}/${IMAGE_NAME}.system ${RELEASE_DIR}/${DISTRO_PATH}/SYSTEM
     cp ${TARGET_IMG}/${IMAGE_NAME}.kernel ${RELEASE_DIR}/${DISTRO_PATH}/KERNEL
     ( cd ${RELEASE_DIR};
