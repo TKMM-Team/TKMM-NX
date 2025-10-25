@@ -30,15 +30,15 @@ PKG_BUILD_FLAGS=" -c Release \
 pre_make_target() {
   mkdir -p ${INSTALL}/tkmm/tmp
   mkdir -p ${INSTALL}/usr/bin
-  cp -v ${PKG_DIR}/scripts/* ${INSTALL}/usr/bin/
 }
 
 makeinstall_target() {
   mkdir -p ${INSTALL}/usr/share/tkmm/
-  chmod +x ${INSTALL}/usr/bin/*
   cp -r ${PKG_DIR}/fonts ${INSTALL}/usr/share/tkmm/fonts
   cp -r ${PKG_DIR}/audio ${INSTALL}/usr/share/tkmm/audio
+  cp -v ${PKG_DIR}/scripts/* ${INSTALL}/usr/bin/
   dotnet publish src/Tkmm ${PKG_BUILD_FLAGS} -o ${INSTALL}/usr/bin
+  chmod +x ${INSTALL}/usr/bin/*
 }
 
 post_makeinstall_target() {
