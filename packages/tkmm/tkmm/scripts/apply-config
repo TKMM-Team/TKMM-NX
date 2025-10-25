@@ -14,9 +14,9 @@ chmod +x /storage/.tkmm/Tkmm 2>/dev/null || true
 rm /run/tkmm_launch.sh
 echo '#!/bin/sh' >  /run/tkmm_launch.sh
 if  [ -f /storage/.tkmm/Tkmm ]; then
-  echo /storage/.tkmm/Tkmm $1 >> /run/tkmm_launch.sh
+  echo /storage/.tkmm/Tkmm \$1 >> /run/tkmm_launch.sh
 else
-  echo Tkmm $1 >> /run/tkmm_launch.sh
+  echo Tkmm \$1 >> /run/tkmm_launch.sh
 fi
 chmod +x /run/tkmm_launch.sh
 

@@ -32,16 +32,18 @@ pre_make_target() {
   mkdir -p ${INSTALL}/usr/bin
 }
 
-makeinstall_target() {
+make_target() {
   mkdir -p ${INSTALL}/usr/share/tkmm/
   cp -r ${PKG_DIR}/fonts ${INSTALL}/usr/share/tkmm/fonts
   cp -r ${PKG_DIR}/audio ${INSTALL}/usr/share/tkmm/audio
   cp -v ${PKG_DIR}/scripts/* ${INSTALL}/usr/bin/
-  dotnet publish src/Tkmm ${PKG_BUILD_FLAGS} -o ${INSTALL}/usr/bin
+  dotnet publish src/Tkmm ${PKG_BUILD_FLAGS} -o ${INSTALL}/tkmm/tmp
+  tar -cvf ${INSTALL}/tkmm/tkmm.tar.gz -C ${INSTALL}/tkmm/tmp .
+  rm -rf ${INSTALL}/tkmm/tmp
   chmod +x ${INSTALL}/usr/bin/*
 }
 
-post_makeinstall_target() {
+post_make_target() {
   mkdir -p ${INSTALL}/etc/fonts/conf.d
   cp -v ${PKG_DIR}/conf.d/*.conf ${INSTALL}/etc/fonts/conf.d
   cp -v ${PKG_DIR}/config.ini ${INSTALL}/usr/share/tkmm/

@@ -307,6 +307,12 @@ if [ "${BOOTLOADER}" = "switch-bootloader" ]; then
 fi
 chmod 0644 ${TARGET_IMG}/${IMAGE_NAME}.kernel
 
+if [ "${DISTRO}" = "TKMM" ]; then
+  tar -xf ${BUILD}/image/system/tkmm/tkmm.tar.gz -C ${BUILD}/image/system/usr/bin
+  rm -rf ${BUILD}/image/system/tkmm
+  chmod +x ${BUILD}/image/system/usr/bin/Tkmm
+fi
+
 # Set mksquashfs options for each compression method
 if [ -z "${SQUASHFS_COMPRESSION_OPTION}" ]; then
   if [ "${SQUASHFS_COMPRESSION:-gzip}" = "gzip" ]; then
@@ -401,6 +407,11 @@ if [ "${1}" = "release" -o "${1}" = "mkimage" -o "${1}" = "noobs" ]; then
       mv ${RELEASE_DIR}/${DISTRO_PATH}/boot/nx-plat.dtimg ${RELEASE_DIR}/${DISTRO_PATH}/
     fi
     mkdir -p ${RELEASE_DIR}/${DISTRO_PATH}/storage
+    if [ "${DISTRO}" = "TKMM" ]; then
+      mkdir -p ${RELEASE_DIR}/${DISTRO_PATH}/storage/.tkmm/
+      tar -xf temp_tkmm/tkmm.tar.gz -C ${RELEASE_DIR}/${DISTRO_PATH}/storage/.tkmm/
+      rm -rf temp_tkmm/
+    fi
     cp ${TARGET_IMG}/${IMAGE_NAME}.system ${RELEASE_DIR}/${DISTRO_PATH}/SYSTEM
     cp ${TARGET_IMG}/${IMAGE_NAME}.kernel ${RELEASE_DIR}/${DISTRO_PATH}/KERNEL
     ( cd ${RELEASE_DIR};
