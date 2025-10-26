@@ -442,8 +442,13 @@ if [ "${1}" = "release" -o "${1}" = "mkimage" -o "${1}" = "noobs" ]; then
   ( cd target/${IMAGE_NAME} && zip -r ${TARGET_IMG}/${IMAGE_NAME}.zip . )
 
   # Create update tar file
-  ( cd target/${IMAGE_NAME} && tar -cvf ${TARGET_IMG}/update.tar . )
-  
+  ( cd target/${IMAGE_NAME}
+    mkdir update
+    mv ${DISTRO_PATH} update/
+    mv bootloader/ update/
+    tar -cvf ${TARGET_IMG}/update.tar .
+  )
+
   # Create sha256 checksum of the zip file
   ( cd ${TARGET_IMG}
     sha256sum ${IMAGE_NAME}.zip > ${IMAGE_NAME}.zip.sha256
