@@ -64,6 +64,7 @@ cp \${SYSTEM_ROOT}/usr/share/bootloader/boot/bl33.bin \${BOOT_ROOT}/${DISTRO_PAT
 [ ! -f "\${BOOT_ROOT}/bootloader/ini/${DISTRO}.ini" ] && cp \${SYSTEM_ROOT}/usr/share/bootloader/boot/${DISTRO}.ini \${BOOT_ROOT}/bootloader/ini/${DISTRO}.ini
 cp \${SYSTEM_ROOT}/usr/share/bootloader/boot/splash.bmp \${BOOT_ROOT}/${DISTRO_PATH}/boot/
 cp \${SYSTEM_ROOT}/usr/share/bootloader/boot/${DISTRO_ICON} \${BOOT_ROOT}/${DISTRO_PATH}/boot/
+echo 'self' > /sys/devices/r2p/action
 EOF
 
 chmod +x ${INSTALL}/usr/share/bootloader/update.sh

@@ -38,6 +38,9 @@ jobs:
           rm -rf target/*
           DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 scripts/clean tkmm
           DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 scripts/clean samba
+          DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 scripts/clean linux
+          DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 scripts/clean kernel
+          DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 scripts/clean initramfs
           THREADCOUNT=20 DISTRO=TKMM PROJECT=L4T DEVICE=Switch ARCH=aarch64 TKMM_VERSION=${{ github.ref_name }} make image
           mv target/* releases/
           echo "success=true" >> $GITHUB_OUTPUT
@@ -91,7 +94,6 @@ jobs:
         run: |
           mv releases/*.system releases/SYSTEM
           mv releases/*.zip releases/tkmm-nx.zip
-          mv debug/*.zip debug/tkmm-nx-debug.zip
 
       - name: Create Checksum File
         working-directory: /home/bubbles/TKMM-NX
@@ -109,7 +111,7 @@ jobs:
             /home/bubbles/TKMM-NX/releases/SYSTEM
             /home/bubbles/TKMM-NX/releases/SYSTEM.checksum
             /home/bubbles/TKMM-NX/releases/tkmm-nx.zip
-            /home/bubbles/TKMM-NX/debug/tkmm-nx-debug.zip
+            /home/bubbles/TKMM-NX/releases/update.tar
 
       - name: Cleanup Folders
         run: |
