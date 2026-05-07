@@ -1,5 +1,6 @@
 #!/bin/bash
 
+fbsetroot -solid black
 sleep 1
 systemctl stop tkmm
 sleep 1

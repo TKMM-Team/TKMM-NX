@@ -1,7 +1,7 @@
 [Unit]
 Description=TKMM user autostart script
 Before=tkmm.service
-After=graphical.target
+After=graphical.target tkmm-splash.service
 
 [Service]
 Type=oneshot

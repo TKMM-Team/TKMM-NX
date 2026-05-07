@@ -1,7 +1,8 @@
 [Unit]
 Description=TKMM
 Requires=graphical.target
-After=graphical.target
+Wants=tkmm-splash.service
+After=graphical.target tkmm-splash.service
 
 [Service]
 User=TKMM
