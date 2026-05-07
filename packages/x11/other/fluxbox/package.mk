@@ -8,7 +8,7 @@ PKG_SHA256="fc8c75fe94c54ed5a5dd3fd4a752109f8949d6df67a48e5b11a261403c382ec0"
 PKG_LICENSE="OSS"
 PKG_SITE="http://fluxbox.org/"
 PKG_URL="http://sourceforge.net/projects/fluxbox/files/fluxbox/${PKG_VERSION}/${PKG_NAME}-${PKG_VERSION}.tar.xz"
-PKG_DEPENDS_TARGET="toolchain libX11 libXrandr libXext libXrender"
+PKG_DEPENDS_TARGET="toolchain libX11 libXrandr libXext libXrender imlib2 feh"
 PKG_LONGDESC="Fluxbox is a windowmanager for X that was based on the Blackbox 0.61.1 code."
 PKG_TOOLCHAIN="autotools"
 
@@ -24,7 +24,7 @@ PKG_CONFIGURE_OPTS_TARGET="ac_cv_func_realloc_0_nonnull=yes \
                            --disable-debug \
                            --disable-test \
                            --disable-nls \
-                           --disable-imlib2"
+                           --enable-imlib2"
 
 post_install() {
   if [ "${DISTRO}" = "Lakka" ]; then
@@ -49,4 +49,7 @@ post_makeinstall_target() {
   cp ${PKG_DIR}/config/apps ${INSTALL}/usr/share/fluxbox/
   cp ${PKG_DIR}/config/init ${INSTALL}/usr/share/fluxbox/
   cp ${PKG_DIR}/config/keys ${INSTALL}/usr/share/fluxbox/
+
+  cp ${PKG_DIR}/scripts/fbsetbg ${INSTALL}/usr/bin/fbsetbg
+  chmod +x ${INSTALL}/usr/bin/fbsetbg
 }

@@ -35,6 +35,7 @@ make_target() {
   mkdir -p ${INSTALL}/usr/share/tkmm/
   cp -r ${PKG_DIR}/fonts ${INSTALL}/usr/share/tkmm/fonts
   cp -r ${PKG_DIR}/audio ${INSTALL}/usr/share/tkmm/audio
+  cp -r ${PKG_DIR}/splashes ${INSTALL}/usr/share/tkmm/splashes
   cp -v ${PKG_DIR}/scripts/* ${INSTALL}/usr/bin/
   dotnet publish src/Tkmm ${PKG_BUILD_FLAGS} -o ${INSTALL}/usr/share/tkmm
   chmod +x ${INSTALL}/usr/share/tkmm/Tkmm
