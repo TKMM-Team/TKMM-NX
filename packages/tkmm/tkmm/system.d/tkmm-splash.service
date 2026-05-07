@@ -1,0 +1,18 @@
+[Unit]
+Description=Apply TKMM splash wallpaper
+DefaultDependencies=no
+Before=tkmm-autostart.service tkmm.service
+After=graphical.target
+PartOf=tkmm.service
+
+[Service]
+Type=oneshot
+User=TKMM
+Group=TKMM
+Environment="DISPLAY=:0.0"
+Environment="HOME=/storage"
+ExecStart=/usr/bin/apply-splash
+
+[Install]
+WantedBy=tkmm.target
+WantedBy=tkmm.service

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Apply a randomized splash wallpaper before TKMM starts.
+
+SPLASHDIR="/usr/share/tkmm/splashes"
+QUEUE="/storage/.cache/tkmm_splash_queue"
+list="/run/tkmm-splash-all.$$"
+
+mkdir -p "$(dirname "$QUEUE")"
+
+if [ -f "$QUEUE" ] && [ -s "$QUEUE" ]; then
+  img=$(head -n 1 "$QUEUE" | tr -d '\r')
+  tail -n +2 "$QUEUE" >"${QUEUE}.t" && mv "${QUEUE}.t" "$QUEUE"
+  fbsetbg -f "$img"
+else
+  find "$SPLASHDIR" -maxdepth 1 -type f -iname '*.png' 2>/dev/null | sort >"$list"
+  n=$(wc -l <"$list" | tr -d ' \t\r')
+  if [ -z "$n" ] || [ "$n" -eq 0 ] 2>/dev/null; then
+    rm -f "$list"
+  elif [ "$n" -eq 1 ] 2>/dev/null; then
+    img=$(head -n 1 "$list")
+    rm -f "$QUEUE"
+    rm -f "$list"
+    fbsetbg -f "$img"
+  else
+    awk 'BEGIN{srand()} {print rand() "\t" $0}' "$list" | sort -n | cut -f2- >"$QUEUE"
+    img=$(head -n 1 "$QUEUE" | tr -d '\r')
+    tail -n +2 "$QUEUE" >"${QUEUE}.t" && mv "${QUEUE}.t" "$QUEUE"
+    rm -f "$list"
+    fbsetbg -f "$img"
+  fi
+fi
