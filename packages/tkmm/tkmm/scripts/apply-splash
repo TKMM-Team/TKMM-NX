@@ -13,7 +13,7 @@ if [ -f "$QUEUE" ] && [ -s "$QUEUE" ]; then
   tail -n +2 "$QUEUE" >"${QUEUE}.t" && mv "${QUEUE}.t" "$QUEUE"
   fbsetbg -f "$img"
 else
-  find "$SPLASHDIR" -maxdepth 1 -type f -iname '*.png' 2>/dev/null | sort >"$list"
+  find "$SPLASHDIR" -maxdepth 1 -type f -iname '*.jpg' 2>/dev/null | sort >"$list"
   n=$(wc -l <"$list" | tr -d ' \t\r')
   if [ -z "$n" ] || [ "$n" -eq 0 ] 2>/dev/null; then
     rm -f "$list"
