@@ -39,7 +39,6 @@ post_install() {
 
 post_makeinstall_target() {
   rm -rf ${INSTALL}/usr/bin/fbrun
-  rm -rf ${INSTALL}/usr/bin/fbsetbg
   rm -rf ${INSTALL}/usr/bin/fluxbox-generate_menu
   rm -rf ${INSTALL}/usr/bin/fluxbox-remote
   rm -rf ${INSTALL}/usr/bin/startfluxbox
@@ -50,6 +49,5 @@ post_makeinstall_target() {
   cp ${PKG_DIR}/config/init ${INSTALL}/usr/share/fluxbox/
   cp ${PKG_DIR}/config/keys ${INSTALL}/usr/share/fluxbox/
 
-  cp ${PKG_DIR}/scripts/fbsetbg ${INSTALL}/usr/bin/fbsetbg
   chmod +x ${INSTALL}/usr/bin/fbsetbg
 }

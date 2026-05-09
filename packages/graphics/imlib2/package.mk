@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-# Copyright (C) 2026 Team TKMM
+# Copyright (C) 2026 TKMM-Team
 
 PKG_NAME="imlib2"
 PKG_VERSION="1.12.3"
