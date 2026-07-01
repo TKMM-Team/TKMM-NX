@@ -105,7 +105,7 @@ jobs:
     - name: Check for changes
       id: check-changes
       run: |
-        if git diff --quiet; then
+        if git diff --quiet -- packages/tkmm/dotnet-runtime/package.mk packages/tkmm/dotnet-sdk/package.mk; then
           echo "No changes detected"
           echo "has_changes=false" >> $GITHUB_OUTPUT
         else
