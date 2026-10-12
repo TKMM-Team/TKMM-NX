@@ -17,6 +17,7 @@ mkpkg-temp
 
 # private working directory
 /.work/
+/.vscode/
 
 # dedicated filesystem
 /lost+found/
