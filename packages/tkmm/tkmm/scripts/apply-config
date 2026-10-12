@@ -6,6 +6,7 @@
 # This avoids the app from completely refusing to launch when /storage is mounted as read-only
 
 mkdir -p /tmp/tkmm_bundle
+chmod 777 /tmp/tkmm_bundle
 
 # This part is used to define whether we're in a development environment or not
 # If this is a user environment, we use the Tkmm binary from the OS image
