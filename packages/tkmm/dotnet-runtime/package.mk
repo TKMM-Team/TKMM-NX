@@ -2,13 +2,13 @@
 # Copyright (C) 2022-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="dotnet-runtime"
-PKG_VERSION="10.0.12"
+PKG_VERSION="10.0.14"
 PKG_LICENSE="MIT"
 PKG_SITE="https://dotnet.microsoft.com/"
 PKG_LONGDESC=".NET Runtime is a set of libraries to run .NET applications."
 PKG_TOOLCHAIN="manual"
 PKG_AUTORECONF="no"
-PKG_SHA256="faa0a5d136fd9d582db4e6b3b9faf81715dc1c879c9072efc08122fba1623727"
+PKG_SHA256="b7647c18ea4cf034daf2716b759fd7baf0083cd2501b156b521363c15cbad848"
 PKG_URL="https://builds.dotnet.microsoft.com/dotnet/Runtime/${PKG_VERSION}/${PKG_NAME}-${PKG_VERSION}-linux-arm64.tar.gz"
 PKG_SOURCE_NAME="${PKG_NAME}-${PKG_VERSION}-${ARCH}.tar.gz"
 
