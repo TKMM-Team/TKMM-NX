@@ -17,4 +17,3 @@ ExecStart=/usr/bin/apply-splash
 [Install]
 WantedBy=graphical.target
 WantedBy=tkmm.target
-WantedBy=tkmm.service
