@@ -28,6 +28,11 @@
 /usr/bin/busybox chmod 766 /sys/devices/r2p/param1
 /usr/bin/busybox chmod 766 /sys/devices/r2p/param2
 
+# TKMM
+
+/usr/bin/busybox mkdir -p /tmp/tkmm_bundle
+/usr/bin/busybox chmod 766 /tmp/tkmm_bundle
+
 #Brightness
 /usr/bin/busybox chmod 766 /sys/class/backlight/backlight/brightness
 
